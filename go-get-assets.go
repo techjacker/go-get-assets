@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-var assetLister = AssetLister{}
+// var assetLister = AssetLister{}
 
 // type AssetGetter struct {
 // 	AssetLister

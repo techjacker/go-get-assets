@@ -1,0 +1,19 @@
+{
+  "nophotos": "here",
+  "clients": [{
+    "name": "Samsung",
+    "photourl": "images/city.jpg"
+  }, {
+    "name": "Sony",
+    "photourl": "images/sf.jpg"
+  }],
+  "projects": [{
+    "descriptionsub": "Launch Project",
+    "descriptionsublink": "http://themummyofmulberryavenue.com",
+    "photourl": "images/water.jpg, images/highway.jpg, images/freedom.jpg, images/mountain.jpg, images/traffic.jpg"
+  }, {
+    "descriptionsub": "Launch Project",
+    "descriptionsublink": "http://themummyofmulberryavenue.com",
+    "photourl": "images/water.jpg, images/highway.jpg, images/freedom.jpg, images/mountain.jpg, images/traffic.jpg"
+  }]
+}
