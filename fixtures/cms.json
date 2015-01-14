@@ -1,19 +1,23 @@
 {
   "nophotos": "here",
+  "mapofphotos": {
+    "photourl": "http://gdrive.com/diff.jpg",
+    "noaphoto": "sdfsd"
+  },
   "clients": [{
     "name": "Samsung",
-    "photourl": "images/city.jpg"
+    "photourl": "http://gdrive.com/city.jpg"
   }, {
     "name": "Sony",
-    "photourl": "images/sf.jpg"
+    "photourl": "http://gdrive.com/sf.jpg"
   }],
   "projects": [{
     "descriptionsub": "Launch Project",
     "descriptionsublink": "http://themummyofmulberryavenue.com",
-    "photourl": "images/water.jpg, images/highway.jpg, images/freedom.jpg, images/mountain.jpg, images/traffic.jpg"
+    "photourl": "http://gdrive.com/water.jpg, http://gdrive.com/highway.jpg, http://gdrive.com/freedom.jpg, http://gdrive.com/mountain.jpg, http://gdrive.com/traffic.jpg"
   }, {
     "descriptionsub": "Launch Project",
     "descriptionsublink": "http://themummyofmulberryavenue.com",
-    "photourl": "images/water.jpg, images/highway.jpg, images/freedom.jpg, images/mountain.jpg, images/traffic.jpg"
+    "photourl": "http://gdrive.com/water.jpg, http://gdrive.com/highway.jpg, http://gdrive.com/freedom.jpg, http://gdrive.com/mountain.jpg, http://gdrive.com/traffic.jpg"
   }]
 }

@@ -3,12 +3,14 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 )
 
 type Alister struct {
+	Needle    string
 	InputPath string
-	Data      map[string]interface{}
+	Data      interface{}
 	Assets    []string
 }
 
@@ -22,9 +24,28 @@ func (a *Alister) readFile() ([]byte, error) {
 	return buf.Bytes(), err
 }
 
+func (a *Alister) SearchForAssets(cell string) {
+
+}
+
 // extract a list of assets from the JSON
 func (a *Alister) buildAssetList() error {
-	// a.Assets{"hello", "world"}
+
+	d := a.Data.(map[string]interface{})
+
+	for _, v := range d {
+
+		switch v.(type) {
+		case string:
+			fmt.Println("string:::: " + v.(string))
+		case []interface{}:
+			fmt.Println("slice:::: ")
+		case map[string]interface{}:
+			fmt.Println("map:::: ")
+		}
+
+	}
+
 	return nil
 }
 
@@ -36,11 +57,11 @@ func (a *Alister) Run() error {
 		return err
 	}
 
-	err = json.Unmarshal(contents, &a.Data)
+	if err = json.Unmarshal(contents, &a.Data); err != nil {
+		return err
+	}
 
-	// if err = a.marshallInput(bytes.NewReader(file)); err != nil {
-	// 	return err
-	// }
+	a.buildAssetList()
 
 	// if err = a.buildAssetList(); err != nil {
 	// 	return err
