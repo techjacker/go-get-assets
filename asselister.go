@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"strings"
 )
 
 type Alister struct {
@@ -24,8 +25,16 @@ func (a *Alister) readFile() ([]byte, error) {
 	return buf.Bytes(), err
 }
 
-func (a *Alister) SearchForAssets(cell string) {
+func (a *Alister) SearchCell(cell string) {
+	if strings.Contains(cell, a.Needle) {
+		a.Assets = append(a.Assets, cell)
+	}
+}
 
+func (a *Alister) Search(cell string) {
+	for _, p := range strings.Split(cell, ",") {
+		a.SearchCell(p)
+	}
 }
 
 // extract a list of assets from the JSON
@@ -37,11 +46,14 @@ func (a *Alister) buildAssetList() error {
 
 		switch v.(type) {
 		case string:
-			fmt.Println("string:::: " + v.(string))
+			a.Search(v.(string))
+			// fmt.Println("string:::: " + v.(string))
 		case []interface{}:
-			fmt.Println("slice:::: ")
+			// fmt.Println("slice:::: ")
 		case map[string]interface{}:
-			fmt.Println("map:::: ")
+			// fmt.Println("map:::: ")
+		default:
+			fmt.Println("default")
 		}
 
 	}

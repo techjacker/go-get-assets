@@ -16,11 +16,27 @@ import (
 
 func TestSearchForAssets(t *testing.T) {
 	var a Alister
+
 	a.Needle = "http://gdrive.com"
-	a.SearchForAssets("http://themummyofmulberryavenue.com")
+	a.Search("http://themummyofmulberryavenue.com")
 	if len(a.Assets) != 0 {
 		t.Fatalf("%s", "should not have found any assets")
 	}
+
+	a.Assets = []string{}
+	assetOne := "http://gdrive.com/2243/"
+	a.Search(assetOne)
+	if len(a.Assets) != 1 {
+		t.Fatalf("%s", "should have found one asset")
+	}
+
+	a.Assets = []string{}
+	assetArray := "http://gdrive.com/2243/, http://gdrive.com/diffid/"
+	a.Search(assetArray)
+	if len(a.Assets) != 2 {
+		t.Fatalf("%s", "should have found two assets")
+	}
+
 }
 
 func TestRun(t *testing.T) {
