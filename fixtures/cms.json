@@ -2,6 +2,7 @@
   "nophotos": "here",
   "mapofphotos": {
     "photourl": "http://gdrive.com/diff.jpg",
+    "nastyarray": ["sdfsd"],
     "noaphoto": "sdfsd"
   },
   "clients": [{
@@ -14,10 +15,10 @@
   "projects": [{
     "descriptionsub": "Launch Project",
     "descriptionsublink": "http://themummyofmulberryavenue.com",
-    "photourl": "http://gdrive.com/water.jpg, http://gdrive.com/highway.jpg, http://gdrive.com/freedom.jpg, http://gdrive.com/mountain.jpg, http://gdrive.com/traffic.jpg"
+    "photourl": "http://gdrive.com/highway.jpg, http://gdrive.com/freedom.jpg"
   }, {
     "descriptionsub": "Launch Project",
     "descriptionsublink": "http://themummyofmulberryavenue.com",
-    "photourl": "http://gdrive.com/water.jpg, http://gdrive.com/highway.jpg, http://gdrive.com/freedom.jpg, http://gdrive.com/mountain.jpg, http://gdrive.com/traffic.jpg"
+    "photourl": "http://gdrive.com/freedom.jpg, http://gdrive.com/traffic.jpg"
   }]
 }

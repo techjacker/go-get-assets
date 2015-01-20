@@ -53,6 +53,14 @@ func TestRun(t *testing.T) {
 
 	t.Logf("%s%d", "# assets = ", len(a.Assets))
 
+	// before de duping
+	// set in golang??
+	if len(a.Assets) != 7 {
+		// after dedpuing
+		// if len(a.Assets) != 6 {
+		t.Fatal("it shd have found 8 assets")
+	}
+
 	// t.Logf("%v", a.Data["nophotos"])
 	// if a.Assets[0] != "helsssl" {
 	// 	t.Fatalf("%s", "should = heloo")

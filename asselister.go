@@ -37,28 +37,32 @@ func (a *Alister) Search(cell string) {
 	}
 }
 
-// extract a list of assets from the JSON
-func (a *Alister) buildAssetList() error {
-
-	d := a.Data.(map[string]interface{})
-
+func (a *Alister) searchArray(d []interface{}) {
 	for _, v := range d {
-
 		switch v.(type) {
 		case string:
 			a.Search(v.(string))
-			// fmt.Println("string:::: " + v.(string))
 		case []interface{}:
-			// fmt.Println("slice:::: ")
+			a.searchArray(v.([]interface{}))
 		case map[string]interface{}:
-			// fmt.Println("map:::: ")
+			a.searchMap(v.(map[string]interface{}))
+		}
+	}
+}
+
+func (a *Alister) searchMap(d map[string]interface{}) {
+	for _, v := range d {
+		switch v.(type) {
+		case string:
+			a.Search(v.(string))
+		case []interface{}:
+			a.searchArray(v.([]interface{}))
+		case map[string]interface{}:
+			a.searchMap(v.(map[string]interface{}))
 		default:
 			fmt.Println("default")
 		}
-
 	}
-
-	return nil
 }
 
 func (a *Alister) Run() error {
@@ -73,10 +77,8 @@ func (a *Alister) Run() error {
 		return err
 	}
 
-	a.buildAssetList()
+	// extract a list of assets from the JSON
+	a.searchMap(a.Data.(map[string]interface{}))
 
-	// if err = a.buildAssetList(); err != nil {
-	// 	return err
-	// }
-	return err
+	return nil
 }
