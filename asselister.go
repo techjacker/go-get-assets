@@ -12,7 +12,9 @@ type Alister struct {
 	Needle    string
 	InputPath string
 	Data      interface{}
-	Assets    []string
+	Assets    map[string]struct{}
+	// Assets    map[string]string
+	// Assets    []string
 }
 
 func (a *Alister) readFile() ([]byte, error) {
@@ -27,13 +29,14 @@ func (a *Alister) readFile() ([]byte, error) {
 
 func (a *Alister) SearchCell(cell string) {
 	if strings.Contains(cell, a.Needle) {
-		a.Assets = append(a.Assets, cell)
+		a.Assets[cell] = struct{}{}
+		// a.Assets = append(a.Assets, cell)
 	}
 }
 
 func (a *Alister) Search(cell string) {
 	for _, p := range strings.Split(cell, ",") {
-		a.SearchCell(p)
+		a.SearchCell(strings.TrimSpace(p))
 	}
 }
 

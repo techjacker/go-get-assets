@@ -23,14 +23,15 @@ func TestSearchForAssets(t *testing.T) {
 		t.Fatalf("%s", "should not have found any assets")
 	}
 
-	a.Assets = []string{}
+	a.Assets = map[string]struct{}{}
 	assetOne := "http://gdrive.com/2243/"
 	a.Search(assetOne)
 	if len(a.Assets) != 1 {
 		t.Fatalf("%s", "should have found one asset")
 	}
 
-	a.Assets = []string{}
+	a.Assets = map[string]struct{}{}
+	// a.Assets = []string{}
 	assetArray := "http://gdrive.com/2243/, http://gdrive.com/diffid/"
 	a.Search(assetArray)
 	if len(a.Assets) != 2 {
@@ -46,24 +47,14 @@ func TestRun(t *testing.T) {
 	// a.InputPath = filepath.Join(cwd, "fixtures", "cms.json")
 	a.InputPath = "/home/andy/lib/modules/go/src/github.com/techjacker/go-get-assets/fixtures/cms.json"
 	a.Needle = "http://gdrive.com"
+	a.Assets = make(map[string]struct{})
 
 	if err := a.Run(); err != nil {
 		t.Fatalf("%v", err)
 	}
 
-	t.Logf("%s%d", "# assets = ", len(a.Assets))
-
-	// before de duping
-	// set in golang??
-	if len(a.Assets) != 7 {
-		// after dedpuing
-		// if len(a.Assets) != 6 {
-		t.Fatal("it shd have found 8 assets")
+	if len(a.Assets) != 6 {
+		t.Fatalf("%s%d", "# assets = ", len(a.Assets))
+		t.Fatalf("\n\n%v\n\n", a.Assets)
 	}
-
-	// t.Logf("%v", a.Data["nophotos"])
-	// if a.Assets[0] != "helsssl" {
-	// 	t.Fatalf("%s", "should = heloo")
-	// }
-
 }
