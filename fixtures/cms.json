@@ -15,7 +15,9 @@
   "projects": [{
     "descriptionsub": "Launch Project",
     "descriptionsublink": "http://themummyofmulberryavenue.com",
-    "photourl": "http://gdrive.com/highway.jpg, http://gdrive.com/freedom.jpg"
+    "photourl": [{
+      "deep": "http://gdrive.com/highway.jpg, http://gdrive.com/freedom.jpg"
+    }]
   }, {
     "descriptionsub": "Launch Project",
     "descriptionsublink": "http://themummyofmulberryavenue.com",
