@@ -3,7 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
+	// "fmt"
 	"io/ioutil"
 	"strings"
 )
@@ -62,8 +62,6 @@ func (a *Alister) searchMap(d map[string]interface{}) {
 			a.searchArray(v.([]interface{}))
 		case map[string]interface{}:
 			a.searchMap(v.(map[string]interface{}))
-		default:
-			fmt.Println("default")
 		}
 	}
 }

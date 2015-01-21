@@ -2,19 +2,17 @@ package main
 
 import (
 	"fmt"
-	"os"
+	// "os"
 )
 
-// var assetLister = AssetLister{}
-
-// type AssetGetter struct {
-// 	AssetLister
-// 	AssetDownloader
-// }
-
-// $ go-get-assets path-to-data.json outPutDirPath
 func main() {
-	jsonPath := os.Args[1]
-	fmt.Println(jsonPath)
-	// var assetLister = AssetDownloader()
+	var a Alister
+	// a.InputPath = filepath.Join(cwd, "fixtures", "cms.json")
+	a.InputPath = "/home/andy/lib/modules/go/src/github.com/techjacker/go-get-assets/fixtures/cms.json"
+	a.Needle = "http://gdrive.com"
+	a.Assets = make(map[string]struct{})
+
+	if err := a.Run(); err != nil {
+		fmt.Printf("%v", err)
+	}
 }
