@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-type Alister struct {
+type Lister struct {
 	Needle    string
 	InputPath string
 	Data      interface{}
@@ -17,7 +17,7 @@ type Alister struct {
 	// Assets    []string
 }
 
-func (a *Alister) readFile() ([]byte, error) {
+func (a *Lister) readFile() ([]byte, error) {
 	// read file
 	file, err := ioutil.ReadFile(a.InputPath)
 	in := bytes.NewReader(file)
@@ -27,20 +27,20 @@ func (a *Alister) readFile() ([]byte, error) {
 	return buf.Bytes(), err
 }
 
-func (a *Alister) SearchCell(cell string) {
+func (a *Lister) SearchCell(cell string) {
 	if strings.Contains(cell, a.Needle) {
 		a.Assets[cell] = struct{}{}
 		// a.Assets = append(a.Assets, cell)
 	}
 }
 
-func (a *Alister) Search(cell string) {
+func (a *Lister) Search(cell string) {
 	for _, p := range strings.Split(cell, ",") {
 		a.SearchCell(strings.TrimSpace(p))
 	}
 }
 
-func (a *Alister) searchArray(d []interface{}) {
+func (a *Lister) searchArray(d []interface{}) {
 	for _, v := range d {
 		switch v.(type) {
 		case string:
@@ -53,7 +53,7 @@ func (a *Alister) searchArray(d []interface{}) {
 	}
 }
 
-func (a *Alister) searchMap(d map[string]interface{}) {
+func (a *Lister) searchMap(d map[string]interface{}) {
 	for _, v := range d {
 		switch v.(type) {
 		case string:
@@ -66,7 +66,7 @@ func (a *Alister) searchMap(d map[string]interface{}) {
 	}
 }
 
-func (a *Alister) Run() error {
+func (a *Lister) Run() error {
 
 	contents, err := a.readFile()
 

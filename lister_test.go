@@ -15,7 +15,7 @@ import (
 // )
 
 func TestSearchForAssets(t *testing.T) {
-	var a Alister
+	var a Lister
 
 	a.Needle = "http://gdrive.com"
 	a.Search("http://themummyofmulberryavenue.com")
@@ -43,7 +43,7 @@ func TestSearchForAssets(t *testing.T) {
 func TestRun(t *testing.T) {
 	// t.Errorf("%v", &cwd)
 
-	var a Alister
+	var a Lister
 	// a.InputPath = filepath.Join(cwd, "fixtures", "cms.json")
 	a.InputPath = "/home/andy/go/src/github.com/techjacker/go-get-assets/fixtures/cms.json"
 	a.Needle = "http://gdrive.com"
