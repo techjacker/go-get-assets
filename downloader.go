@@ -6,16 +6,16 @@ import (
 )
 
 type Downloader struct {
-	assetUrls []string
+	Assets    map[string]struct{}
 	outputDir string
 }
 
-func (*Downloader) downloadAssets(assetUrls []string, outputDir string) error {
-	fmt.Println("asset downloader")
+func (d *Downloader) downloadAssets() error {
+	fmt.Println("downloader")
 	return nil
 }
 
 // downloadAssets(assetList array, assetTypeLocation map)
-func (*Downloader) downloadSingleAsset(assetUrl string, outputDir string) error {
+func (d *Downloader) downloadSingleAsset() error {
 	return nil
 }
