@@ -1,9 +1,7 @@
 package main
 
 import (
-	"code.google.com/p/google-api-go-client/drive/v2"
 	"fmt"
-
 	// "os"
 )
 

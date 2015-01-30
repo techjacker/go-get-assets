@@ -1,8 +1,9 @@
 package main
 
 import (
-	"code.google.com/p/google-api-go-client/drive/v2"
+	// "code.google.com/p/google-api-go-client/drive/v2"
 	"fmt"
+	"github.com/google/google-api-go-client/drive/v2"
 	"net/http"
 )
 
