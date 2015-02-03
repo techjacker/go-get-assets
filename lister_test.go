@@ -57,4 +57,6 @@ func TestRun(t *testing.T) {
 		t.Fatalf("%s%d", "# assets = ", len(a.Assets))
 		t.Fatalf("\n\n%v\n\n", a.Assets)
 	}
+	// t.Logf("%q", a.Assets)
+	// map["http://gdrive.com/traffic.jpg":{} "http://gdrive.com/diff.jpg":{} "http://gdrive.com/city.jpg":{} "http://gdrive.com/sf.jpg":{} "http://gdrive.com/highway.jpg":{} "http://gdrive.com/freedom.jpg":{}]
 }

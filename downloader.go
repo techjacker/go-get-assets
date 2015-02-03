@@ -47,5 +47,8 @@ func (d *Downloader) Multi() error {
 
 // downloadAssets(assetList array, assetTypeLocation map)
 func (d *Downloader) Single() error {
+
+	// info, err := d.Service.Files.Get(d.Assets[0]).Do()
+
 	return nil
 }
