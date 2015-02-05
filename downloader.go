@@ -29,6 +29,14 @@ func NewDownloader(assets map[string]struct{}, outputDir string) (*Downloader, e
 	// return &Drive{drive, &client}, nil
 }
 
+type DFile struct {
+	DownloadUrl   string `json:"downloadUrl,omitempty"`
+	FileExtension string `json:"fileExtension,omitempty"`
+	Title         string `json:"title,omitempty"`
+	// EmbedLink string `json:"embedLink,omitempty"`
+	// ModifiedDate string `json:"modifiedDate,omitempty"`
+}
+
 type Drive struct {
 	*drive.Service
 	client *http.Client
@@ -40,15 +48,16 @@ type Downloader struct {
 	*Drive
 }
 
-func (d *Downloader) Multi() error {
-	fmt.Println("downloader")
-	return nil
+func (d *Downloader) GetInfoAll() error {
+	// map["http://gdrive.com/traffic.jpg":{}]
+	for i, v := range d.Assets {
+		v, err := d.GetInfo(i)
+	}
+	return err
 }
 
-// downloadAssets(assetList array, assetTypeLocation map)
-func (d *Downloader) Single() error {
-
-	// info, err := d.Service.Files.Get(d.Assets[0]).Do()
-
-	return nil
+// /home/andy/go/src/code.google.com/p/google-api-go-client/drive/v2/drive-gen.go
+// line 3536
+func (d *Downloader) GetInfo(url string) (*DFile, error) {
+	return d.Service.Files.Get(url).Do()
 }
