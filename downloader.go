@@ -2,7 +2,7 @@ package main
 
 import (
 	"code.google.com/p/google-api-go-client/drive/v2"
-	"fmt"
+	// "fmt"
 	// "github.com/google/google-api-go-client/drive/v2"
 	"net/http"
 )
@@ -25,6 +25,7 @@ func NewDownloader(assets map[string]struct{}, outputDir string) (*Downloader, e
 			drive,
 			&client,
 		},
+		map[string]DFile{},
 	}, nil
 	// return &Drive{drive, &client}, nil
 }
@@ -46,18 +47,26 @@ type Downloader struct {
 	Assets    map[string]struct{}
 	OutputDir string
 	*Drive
+	Metadata map[string]DFile
 }
 
 func (d *Downloader) GetInfoAll() error {
 	// map["http://gdrive.com/traffic.jpg":{}]
-	for i, v := range d.Assets {
-		v, err := d.GetInfo(i)
+	var err error
+	for i := range d.Assets {
+		d.Metadata[i], err = d.GetInfo(i)
 	}
 	return err
 }
 
 // /home/andy/go/src/code.google.com/p/google-api-go-client/drive/v2/drive-gen.go
 // line 3536
-func (d *Downloader) GetInfo(url string) (*DFile, error) {
-	return d.Service.Files.Get(url).Do()
+func (d *Downloader) GetInfo(url string) (DFile, error) {
+	f, err := d.Service.Files.Get(url).Do()
+	return DFile{
+		f.DownloadUrl,
+		f.FileExtension,
+		f.Title,
+	}, err
+	// return d.Service.Files.Get(url).Do()
 }
