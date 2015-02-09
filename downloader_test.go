@@ -19,6 +19,6 @@ func TestNewDownloader(t *testing.T) {
 
 	// d.Download
 
-	t.Logf("%q", d.Service)
+	t.Logf("%q", d.Drive.DFilesService)
 	t.Log(d)
 }

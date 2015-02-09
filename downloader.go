@@ -2,10 +2,15 @@ package main
 
 import (
 	"code.google.com/p/google-api-go-client/drive/v2"
+	"fmt"
 	// "fmt"
 	// "github.com/google/google-api-go-client/drive/v2"
 	"net/http"
 )
+
+func ExtractId(url string) string {
+	return ""
+}
 
 func NewDownloader(assets map[string]struct{}, outputDir string) (*Downloader, error) {
 	// client, err := auth.GetOauth2Client(config.ClientId, config.ClientSecret, tokenPath, promptUser)
@@ -22,7 +27,7 @@ func NewDownloader(assets map[string]struct{}, outputDir string) (*Downloader, e
 		assets,
 		outputDir,
 		&Drive{
-			drive,
+			drive.Files,
 			&client,
 		},
 		map[string]DFile{},
@@ -38,9 +43,20 @@ type DFile struct {
 	// ModifiedDate string `json:"modifiedDate,omitempty"`
 }
 
+type DFilesService interface {
+	// Get(string) *DGetCall
+	Get(string) *drive.FilesGetCall
+}
+
+type DGetCall interface {
+	// Do() (*DFilesService, error)
+	Do() (*drive.File, error)
+}
+
 type Drive struct {
-	*drive.Service
+	DFilesService
 	client *http.Client
+	// *drive.Service
 }
 
 type Downloader struct {
@@ -61,12 +77,40 @@ func (d *Downloader) GetInfoAll() error {
 
 // /home/andy/go/src/code.google.com/p/google-api-go-client/drive/v2/drive-gen.go
 // line 3536
-func (d *Downloader) GetInfo(url string) (DFile, error) {
-	f, err := d.Service.Files.Get(url).Do()
-	return DFile{
-		f.DownloadUrl,
-		f.FileExtension,
-		f.Title,
-	}, err
-	// return d.Service.Files.Get(url).Do()
+func (d *Downloader) GetInfo(id string) (DFile, error) {
+
+	fmt.Printf("q", d.Drive)
+	// f, err := d.Service.Files.Get(id).Do()
+	// f, err := d.Files.Get(id).Do()
+	f, err := struct{}{}, fmt.Errorf("")
+
+	fmt.Print(f)
+	// if f.DownloadUrl == "" {
+	// 	return DFile{}, fmt.Errorf("An error occurred: File is not downloadable")
+	// }
+
+	return DFile{}, err
+	// return DFile{
+	// 	f.DownloadUrl,
+	// 	f.FileExtension,
+	// 	f.Title,
+	// }, err
 }
+
+func (d *Downloader) Download(url string) error {
+	// if err != nil {
+	// 	return fmt.Errorf("An error occurred: %v\n", err)
+	// }
+	return nil
+}
+
+// type FilesService struct {
+// 	s *Service
+// }
+// func (r *FilesService) Get(fileId string) *FilesGetCall {
+// type FilesGetCall struct {
+// 	s      *Service
+// 	fileId string
+// 	opt_   map[string]interface{}
+// }
+// func (c *FilesGetCall) Do() (*File, error) {
