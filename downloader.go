@@ -34,22 +34,23 @@ type Downloader struct {
 	OutputDir string
 	Assets    map[string]struct{}
 	Metadata  map[string]DFile
-	*Drive
+	Drive     *Drive
 }
 
 func (d *Downloader) GetInfoAll() error {
 	// map["http://gdrive.com/traffic.jpg":{}]
 	var err error
 	for i := range d.Assets {
-		d.Metadata[i], err = d.GetInfo(i)
+		d.Metadata[i], err = d.GetInfo(i, d.Drive)
 	}
 	return err
 }
 
 // /home/andy/go/src/code.google.com/p/google-api-go-client/drive/v2/drive-gen.go
 // line 3536
-func (d *Downloader) GetInfo(id string) (DFile, error) {
-	f, err := d.Get(id).Do()
+func (d *Downloader) GetInfo(id string, dService DFilesService) (DFile, error) {
+	// f, err := d.Get(id).Do()
+	f, err := dService.Get(id).Do()
 	return DFile{
 		f.DownloadUrl,
 		f.FileExtension,
