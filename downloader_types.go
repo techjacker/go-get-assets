@@ -14,14 +14,19 @@ type DFile struct {
 	// ModifiedDate string `json:"modifiedDate,omitempty"`
 }
 
-type DFilesService interface {
-	// Get(string) *DGetCall
-	Get(string) *drive.FilesGetCall
+type DGetCall interface {
+	Do() (*drive.File, error)
+	// Do() (*DFile, error)
 }
 
-type DGetCall interface {
-	// Do() (*DFile, error)
-	Do() (*drive.File, error)
+type DFilesService interface {
+	// Get(string) *struct{}
+	// Get(string) *interface{}
+	// Get(string) *interface {
+	// 	Do() (*drive.File, error)
+	// }
+	// Get(string) *DGetCall
+	Get(string) *drive.FilesGetCall
 }
 
 type Drive struct {

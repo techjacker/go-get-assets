@@ -17,8 +17,7 @@ func TestNewDownloader(t *testing.T) {
 		t.Fatal("error initialising drive", err)
 	}
 
-	// d.Download
-
-	t.Logf("%q", d.Drive.DFilesService)
-	t.Log(d)
+	// t.Logf("%q", d.Drive.DFilesService)
+	t.Logf("%q", d.Drive)
+	// t.Log(d)
 }

@@ -41,7 +41,7 @@ func (d *Downloader) GetInfoAll() error {
 	// map["http://gdrive.com/traffic.jpg":{}]
 	var err error
 	for i := range d.Assets {
-		d.Metadata[i], err = d.GetInfo(i, d.Drive)
+		d.Metadata[i], err = d.GetInfo(i, d.Drive.DFilesService)
 	}
 	return err
 }
@@ -49,7 +49,6 @@ func (d *Downloader) GetInfoAll() error {
 // /home/andy/go/src/code.google.com/p/google-api-go-client/drive/v2/drive-gen.go
 // line 3536
 func (d *Downloader) GetInfo(id string, dService DFilesService) (DFile, error) {
-	// f, err := d.Get(id).Do()
 	f, err := dService.Get(id).Do()
 	return DFile{
 		f.DownloadUrl,
