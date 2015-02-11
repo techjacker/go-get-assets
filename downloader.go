@@ -23,10 +23,11 @@ func NewDownloader(assets map[string]struct{}, outputDir string) (*Downloader, e
 		outputDir,
 		assets,
 		map[string]DFile{},
-		&Drive{
-			drive.Files,
-			&client,
-		},
+		drive.Files,
+		// &Drive{
+		// 	drive.Files,
+		// 	&client,
+		// },
 	}, nil
 }
 
@@ -34,14 +35,15 @@ type Downloader struct {
 	OutputDir string
 	Assets    map[string]struct{}
 	Metadata  map[string]DFile
-	Drive     *Drive
+	Service   DFilesService
+	// Drive     *Drive
 }
 
 func (d *Downloader) GetInfoAll() error {
 	// map["http://gdrive.com/traffic.jpg":{}]
 	var err error
 	for i := range d.Assets {
-		d.Metadata[i], err = d.GetInfo(i, d.Drive.DFilesService)
+		d.Metadata[i], err = d.GetInfo(i, d.Service)
 	}
 	return err
 }

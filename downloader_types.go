@@ -3,7 +3,7 @@ package main
 import (
 	"code.google.com/p/google-api-go-client/drive/v2"
 	// "github.com/google/google-api-go-client/drive/v2"
-	"net/http"
+	// "net/http"
 )
 
 type DFile struct {
@@ -29,11 +29,11 @@ type DFilesService interface {
 	Get(string) *drive.FilesGetCall
 }
 
-type Drive struct {
-	DFilesService
-	client *http.Client
-	// *drive.Service
-}
+// type Drive struct {
+// 	Service DFilesService
+// 	client  *http.Client
+// 	// *drive.Service
+// }
 
 // type FilesService struct {
 // 	s *Service
