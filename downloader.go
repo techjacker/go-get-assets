@@ -12,8 +12,10 @@ func ExtractId(url string) string {
 
 func NewDownloader(assets map[string]struct{}, outputDir string) (*Downloader, error) {
 
-	client := http.Client{}
-	drive, err := drive.New(&client)
+	// client := http.Client{}
+	// drive, err := drive.New(&client)
+	client := new(http.Client)
+	drive, err := drive.New(client)
 
 	if err != nil {
 		return nil, err
