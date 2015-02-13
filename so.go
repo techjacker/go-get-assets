@@ -5,20 +5,25 @@ import (
 	"net/http"
 )
 
-type MyGetCall interface {
-	Do() (*drive.File, error)
+type MyFile struct {
+	DownloadUrl string `json:"downloadUrl,omitempty"`
+}
+
+type MyFilesGetCall interface {
+	Do() (*MyFile, error)
+	// Do() (*drive.File, error) // this DOES work
 }
 
 type MyFilesService interface {
-	Get(string) *MyGetCall
-	// Get(string) *drive.FilesGetCall
+	Get(string) *MyFilesGetCall
+	// Get(string) *drive.FilesGetCall // this DOES work
+}
+
+func GetInfo(id string, myService MyFilesService) {
+	myService.Get(id).Do()
 }
 
 func main() {
 	drive, _ := drive.New(new(http.Client))
 	GetInfo("id", drive.Files)
-}
-
-func GetInfo(id string, fService MyFilesService) {
-	fService.Get(id).Do()
 }
