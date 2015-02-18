@@ -8,6 +8,9 @@ import (
 	"testing"
 )
 
+func TestCreateFilePath(t *testing.T) {
+}
+
 func TestDownload(t *testing.T) {
 	var d Downloader
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

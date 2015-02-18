@@ -10,12 +10,26 @@ type Downloader struct {
 	Assets    map[string]struct{}
 }
 
-func (d *Downloader) Download(url string) ([]byte, error) {
+func (d *Downloader) CreateFilePath(url string) string {
+	return "filePath"
+}
+
+func (d *Downloader) Download(url string) error {
 
 	res, err := http.Get(url)
 	if err != nil {
-		return []byte{}, err
+		return err
 	}
 	defer res.Body.Close()
-	return ioutil.ReadAll(res.Body)
+	// return ioutil.ReadAll(res.Body)
+	data, err := ioutil.ReadAll(res.Body)
+
+	if err != nil {
+		return err
+	}
+
+	filePath := d.CreateFilePath(url)
+
+	return nil
+	// return ioutil.WriteFile(filePath, data, 0644)
 }
