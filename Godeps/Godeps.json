@@ -1,16 +1,5 @@
 {
 	"ImportPath": "github.com/techjacker/go-get-assets",
 	"GoVersion": "go1.3",
-	"Deps": [
-		{
-			"ImportPath": "code.google.com/p/google-api-go-client/drive/v2",
-			"Comment": "release-107",
-			"Rev": "6ddfebb10ece847f1ae09c701834f1b15abbd8b2"
-		},
-		{
-			"ImportPath": "code.google.com/p/google-api-go-client/googleapi",
-			"Comment": "release-107",
-			"Rev": "6ddfebb10ece847f1ae09c701834f1b15abbd8b2"
-		}
-	]
+	"Deps": []
 }
