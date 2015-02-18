@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"io/ioutil"
 	"net/http"
 )
 
@@ -10,18 +10,12 @@ type Downloader struct {
 	Assets    map[string]struct{}
 }
 
-func (d *Downloader) Download(url string) error {
+func (d *Downloader) Download(url string) ([]byte, error) {
 
-	c := new(http.Client)
-
-	fmt.Print(c)
-	fmt.Print(url)
-
-	// if f.DownloadUrl == "" {
-	// 	return DFile{}, fmt.Errorf("An error occurred: File is not downloadable")
-	// }
-	// if err != nil {
-	// 	return fmt.Errorf("An error occurred: %v\n", err)
-	// }
-	return nil
+	res, err := http.Get(url)
+	if err != nil {
+		return []byte{}, err
+	}
+	defer res.Body.Close()
+	return ioutil.ReadAll(res.Body)
 }
