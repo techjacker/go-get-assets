@@ -1,9 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
+	"regexp"
 )
 
 type Downloader struct {
@@ -13,7 +15,10 @@ type Downloader struct {
 }
 
 func (d *Downloader) CreateDestPath(url string) string {
-	return "filePath"
+	var idReg = regexp.MustCompile(`https://drive.google.com/file/d/(\w)/.*`)
+	id := idReg.FindString(url)
+	fmt.Println("id", id, "\n\n")
+	return "https://googledrive.com/host/" + id
 }
 
 type writeFile func(filename string, data []byte, perm os.FileMode) error
