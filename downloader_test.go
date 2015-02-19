@@ -10,7 +10,19 @@ import (
 	"testing"
 )
 
-func TestCreateFilePath(t *testing.T) {
+func TestCreateDestPath(t *testing.T) {
+	var d Downloader
+	d.OutputDir = "src/images"
+	d.RelativePath = "/images"
+
+	id := "0ByPfUp1fLihSNm5SSjZoalhPQ3M"
+	in := "https://drive.google.com/file/d/" + id + "/view?usp=sharing"
+	got := d.CreateDestPath(in)
+	want := "https://googledrive.com/host/" + id
+
+	if got != want {
+		t.Fatal("got:", got)
+	}
 }
 
 func TestDownload(t *testing.T) {
@@ -47,7 +59,8 @@ func TestDownload(t *testing.T) {
 
 func TestWriteToDisk(t *testing.T) {
 	d := Downloader{
-		os.TempDir() + "/go-get-assets",
+		os.TempDir() + "/go-get-assets/download",
+		"/images",
 		map[string]struct{}{
 			"http://gdrive.com/traffic.jpg": {},
 		},

@@ -7,11 +7,12 @@ import (
 )
 
 type Downloader struct {
-	OutputDir string
-	Assets    map[string]struct{}
+	OutputDir    string
+	RelativePath string
+	Assets       map[string]struct{}
 }
 
-func (d *Downloader) CreateFilePath(url string) string {
+func (d *Downloader) CreateDestPath(url string) string {
 	return "filePath"
 }
 
@@ -31,7 +32,7 @@ func (d *Downloader) Download(url string, wFile writeFile) error {
 		return err
 	}
 
-	// filePath := d.CreateFilePath(url)
+	// filePath := d.CreateDestPath(url)
 
 	// return nil
 	return wFile(url, data, 0644)
