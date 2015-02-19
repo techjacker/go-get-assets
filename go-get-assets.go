@@ -5,6 +5,8 @@ import (
 // "os"
 )
 
+// ioutil.WriteFile
+
 // a.InputPath = filepath.Join(cwd, "fixtures", "cms.json")
 
 // func main() {

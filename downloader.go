@@ -14,11 +14,16 @@ type Downloader struct {
 	Assets       map[string]struct{}
 }
 
-func (d *Downloader) CreateDestPath(url string) string {
-	var idReg = regexp.MustCompile(`https://drive.google.com/file/d/(\w)/.*`)
-	id := idReg.FindString(url)
-	fmt.Println("id", id, "\n\n")
-	return "https://googledrive.com/host/" + id
+func (d *Downloader) CreateDestPath(url string) (string, error) {
+	var err error
+	idReg := regexp.MustCompile(`https://drive.google.com/file/d/(\w+)/.*`)
+	id := idReg.FindStringSubmatch(url)
+
+	if id[1] == "" {
+		err = fmt.Errorf("%s", "no id found in url: "+url)
+	}
+
+	return "https://googledrive.com/host/" + id[1], err
 }
 
 type writeFile func(filename string, data []byte, perm os.FileMode) error
@@ -26,21 +31,20 @@ type writeFile func(filename string, data []byte, perm os.FileMode) error
 func (d *Downloader) Download(url string, wFile writeFile) error {
 
 	res, err := http.Get(url)
+	defer res.Body.Close()
+
 	if err != nil {
 		return err
 	}
-	defer res.Body.Close()
-	// return ioutil.ReadAll(res.Body)
+
 	data, err := ioutil.ReadAll(res.Body)
 
 	if err != nil {
 		return err
 	}
 
-	// filePath := d.CreateDestPath(url)
+	// err, destPath := d.CreateDestPath(url)
+	// return wFile(destPath, data, 0644)
 
-	// return nil
 	return wFile(url, data, 0644)
-	// return wFile(filePath, data, 0644)
-	// return ioutil.WriteFile(filePath, data, 0644)
 }

@@ -17,11 +17,15 @@ func TestCreateDestPath(t *testing.T) {
 
 	id := "0ByPfUp1fLihSNm5SSjZoalhPQ3M"
 	in := "https://drive.google.com/file/d/" + id + "/view?usp=sharing"
-	got := d.CreateDestPath(in)
+	got, err := d.CreateDestPath(in)
 	want := "https://googledrive.com/host/" + id
 
 	if got != want {
 		t.Fatal("got:", got)
+	}
+
+	if err != nil {
+		t.Fatal("err:", err)
 	}
 }
 
