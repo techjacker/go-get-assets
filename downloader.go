@@ -3,6 +3,7 @@ package main
 import (
 	"io/ioutil"
 	"net/http"
+	"os"
 )
 
 type Downloader struct {
@@ -14,7 +15,9 @@ func (d *Downloader) CreateFilePath(url string) string {
 	return "filePath"
 }
 
-func (d *Downloader) Download(url string) error {
+type writeFile func(filename string, data []byte, perm os.FileMode) error
+
+func (d *Downloader) Download(url string, wFile writeFile) error {
 
 	res, err := http.Get(url)
 	if err != nil {
@@ -28,8 +31,10 @@ func (d *Downloader) Download(url string) error {
 		return err
 	}
 
-	filePath := d.CreateFilePath(url)
+	// filePath := d.CreateFilePath(url)
 
-	return nil
+	// return nil
+	return wFile(url, data, 0644)
+	// return wFile(filePath, data, 0644)
 	// return ioutil.WriteFile(filePath, data, 0644)
 }

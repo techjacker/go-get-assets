@@ -1,10 +1,12 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"os"
+	"strings"
 	"testing"
 )
 
@@ -18,11 +20,23 @@ func TestDownload(t *testing.T) {
 	}))
 	defer ts.Close()
 
-	res, err := d.Download(ts.URL)
+	tWriteFile := func(filename string, data []byte, perm os.FileMode) error {
+		if filename != ts.URL {
+			return errors.New("filepath wrong")
+		}
+		if strings.TrimSpace(string(data)) != "Hello, client" {
+			return errors.New("data wrong")
+		}
+		if perm != 0644 {
+			return errors.New("perms wrong")
+		}
+		return nil
+	}
+
+	err := d.Download(ts.URL, tWriteFile)
 	if err != nil {
 		t.Fatal(err)
 	}
-	t.Log("res", res)
 	// greeting, err := ioutil.ReadAll(res.Body)
 	// res.Body.Close()
 	// if err != nil {
