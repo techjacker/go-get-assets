@@ -15,15 +15,15 @@ type Downloader struct {
 }
 
 func (d *Downloader) CreateDestPath(url string) (string, error) {
-	var err error
+
 	idReg := regexp.MustCompile(`https://drive.google.com/file/d/(\w+)/.*`)
 	id := idReg.FindStringSubmatch(url)
 
-	if id[1] == "" {
-		err = fmt.Errorf("%s", "no id found in url: "+url)
+	if len(id) < 2 || id[1] == "" {
+		return "", fmt.Errorf("%s", "no id found in url: "+url)
 	}
 
-	return "https://googledrive.com/host/" + id[1], err
+	return "https://googledrive.com/host/" + id[1], nil
 }
 
 type writeFile func(filename string, data []byte, perm os.FileMode) error
@@ -43,8 +43,13 @@ func (d *Downloader) Download(url string, wFile writeFile) error {
 		return err
 	}
 
-	// err, destPath := d.CreateDestPath(url)
-	// return wFile(destPath, data, 0644)
+	destPath, err := d.CreateDestPath(url)
 
-	return wFile(url, data, 0644)
+	if err != nil {
+		return err
+	}
+
+	return wFile(destPath, data, 0644)
+
+	// return wFile(url, data, 0644)
 }

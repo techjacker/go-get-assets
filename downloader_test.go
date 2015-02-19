@@ -10,6 +10,12 @@ import (
 	"testing"
 )
 
+func TestCreateDestPathMissing(t *testing.T) {
+
+	// bad string goes here
+
+}
+
 func TestCreateDestPath(t *testing.T) {
 	var d Downloader
 	d.OutputDir = "src/images"
