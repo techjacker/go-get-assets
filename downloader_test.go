@@ -55,25 +55,24 @@ func TestDownload(t *testing.T) {
 		return nil
 	}
 
-	err := d.Download(ts.URL, tWriteFile)
+	tCreatePath := func(s string) (string, error) {
+		return s, nil
+	}
+
+	err := d.Download(ts.URL, tWriteFile, tCreatePath)
+
 	if err != nil {
 		t.Fatal(err)
 	}
-	// greeting, err := ioutil.ReadAll(res.Body)
-	// res.Body.Close()
-	// if err != nil {
-	// 	t.Fatal(err)
-	// }
-	// t.Logf("%s", greeting)
 }
 
-func TestWriteToDisk(t *testing.T) {
-	d := Downloader{
-		os.TempDir() + "/go-get-assets/download",
-		"/images",
-		map[string]struct{}{
-			"http://gdrive.com/traffic.jpg": {},
-		},
-	}
-	t.Log(d)
-}
+// func TestWriteToDisk(t *testing.T) {
+// 	d := Downloader{
+// 		os.TempDir() + "/go-get-assets/download",
+// 		"/images",
+// 		map[string]struct{}{
+// 			"http://gdrive.com/traffic.jpg": {},
+// 		},
+// 	}
+// 	t.Log(d)
+// }

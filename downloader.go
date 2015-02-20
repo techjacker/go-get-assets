@@ -26,9 +26,10 @@ func (d *Downloader) CreateDestPath(url string) (string, error) {
 	return "https://googledrive.com/host/" + id[1], nil
 }
 
+type modifyStr func(s string) (string, error)
 type writeFile func(filename string, data []byte, perm os.FileMode) error
 
-func (d *Downloader) Download(url string, wFile writeFile) error {
+func (d *Downloader) Download(url string, wFile writeFile, createPathStr modifyStr) error {
 
 	res, err := http.Get(url)
 	defer res.Body.Close()
@@ -43,13 +44,11 @@ func (d *Downloader) Download(url string, wFile writeFile) error {
 		return err
 	}
 
-	destPath, err := d.CreateDestPath(url)
+	destPath, err := createPathStr(url)
 
 	if err != nil {
 		return err
 	}
 
 	return wFile(destPath, data, 0644)
-
-	// return wFile(url, data, 0644)
 }
