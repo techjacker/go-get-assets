@@ -10,8 +10,10 @@ import (
 	"testing"
 )
 
-var tId string = "0ByPfUp1fLihSNm5SSjZoalhPQ3M"
-var tIn string = "https://drive.google.com/file/d/" + tId + "/view?usp=sharing"
+var (
+	tId = "0ByPfUp1fLihSNm5SSjZoalhPQ3M"
+	tIn = "https://drive.google.com/file/d/" + tId + "/view?usp=sharing"
+)
 
 // func TestExtractIdMissing(t *testing.T) {
 // bad string goes here
@@ -60,24 +62,9 @@ func TestDownload(t *testing.T) {
 		return nil
 	}
 
-	tCreatePath := func(s string) (string, error) {
-		return s, nil
-	}
-
-	err := d.Download(ts.URL, tWriteFile, tCreatePath)
+	err := d.Download(tId, ts.URL, tWriteFile)
 
 	if err != nil {
 		t.Fatal(err)
 	}
 }
-
-// func TestWriteToDisk(t *testing.T) {
-// 	d := Downloader{
-// 		os.TempDir() + "/go-get-assets/download",
-// 		"/images",
-// 		map[string]struct{}{
-// 			"http://gdrive.com/traffic.jpg": {},
-// 		},
-// 	}
-// 	t.Log(d)
-// }

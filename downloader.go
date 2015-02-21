@@ -36,7 +36,7 @@ func (d *Downloader) CreateTargetUrl(id string) string {
 type modifyStr func(s string) (string, error)
 type writeFile func(filename string, data []byte, perm os.FileMode) error
 
-func (d *Downloader) Download(url string, wFile writeFile, createPathStr modifyStr) error {
+func (d *Downloader) Download(id string, url string, wFile writeFile) error {
 
 	res, err := http.Get(url)
 	defer res.Body.Close()
@@ -51,11 +51,22 @@ func (d *Downloader) Download(url string, wFile writeFile, createPathStr modifyS
 		return err
 	}
 
-	destPath, err := createPathStr(url)
+	return wFile(d.CreateDestPath(id), data, 0644)
+}
 
-	if err != nil {
-		return err
+func (d *Downloader) Run() error {
+
+	var (
+		id  string
+		url string
+		err error
+	)
+
+	for k, _ := range d.Assets {
+		if id = d.ExtractId(k); id != "" {
+			url = d.CreateTargetUrl(id)
+			err = d.Download(id, url, ioutil.WriteFile)
+		}
 	}
-
-	return wFile(destPath, data, 0644)
+	return err
 }

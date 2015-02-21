@@ -9,10 +9,12 @@ import (
 )
 
 type Lister struct {
+	// input
 	Needle    string
 	InputPath string
-	Data      interface{}
-	Assets    map[string]struct{}
+	// output
+	Data   interface{}
+	Assets map[string]struct{}
 	// Assets    map[string]string
 	// Assets    []string
 }
@@ -66,6 +68,7 @@ func (a *Lister) searchMap(d map[string]interface{}) {
 	}
 }
 
+// search through JSON and create map of assets
 func (a *Lister) Run() error {
 
 	contents, err := a.readFile()
