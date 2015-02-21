@@ -28,7 +28,7 @@ func TestExtractId(t *testing.T) {
 func TestCreateDestPath(t *testing.T) {
 	var d Downloader
 	d.OutputDir = "src/images"
-	got := d.CreateDestPath(tIn)
+	got := d.CreateDestPath(tId)
 	if got != "src/images/"+tId {
 		t.Fatal("got:", got)
 	}
@@ -37,7 +37,7 @@ func TestCreateDestPath(t *testing.T) {
 func TestCreateTargetUrl(t *testing.T) {
 	var d Downloader
 	want := "https://googledrive.com/host/" + tId
-	if d.CreateTargetUrl(tIn) != want {
+	if d.CreateTargetUrl(tId) != want {
 		t.Fatal("got:", d.CreateTargetUrl(tIn))
 	}
 }

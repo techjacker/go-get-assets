@@ -27,7 +27,7 @@ func (d *Downloader) ExtractId(url string) string {
 }
 
 func (d *Downloader) CreateDestPath(id string) string {
-	return filepath.Join(d.OutputDir + id)
+	return filepath.Join(d.OutputDir, id)
 }
 func (d *Downloader) CreateTargetUrl(id string) string {
 	return "https://googledrive.com/host/" + id
