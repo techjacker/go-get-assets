@@ -10,28 +10,33 @@ import (
 	"testing"
 )
 
-func TestCreateDestPathMissing(t *testing.T) {
+var tId string = "0ByPfUp1fLihSNm5SSjZoalhPQ3M"
+var tIn string = "https://drive.google.com/file/d/" + tId + "/view?usp=sharing"
 
-	// bad string goes here
+// func TestExtractIdMissing(t *testing.T) {
+// bad string goes here
 
+func TestExtractId(t *testing.T) {
+	var d Downloader
+	if d.ExtractId(tIn) != tId {
+		t.Fatal("got:", d.ExtractId(tIn))
+	}
 }
 
 func TestCreateDestPath(t *testing.T) {
 	var d Downloader
 	d.OutputDir = "src/images"
-	d.RelativePath = "/images"
-
-	id := "0ByPfUp1fLihSNm5SSjZoalhPQ3M"
-	in := "https://drive.google.com/file/d/" + id + "/view?usp=sharing"
-	got, err := d.CreateDestPath(in)
-	want := "https://googledrive.com/host/" + id
-
-	if got != want {
+	got := d.CreateDestPath(tIn)
+	if got != "src/images/"+tId {
 		t.Fatal("got:", got)
 	}
+}
 
-	if err != nil {
-		t.Fatal("err:", err)
+func TestCreateTargetUrl(t *testing.T) {
+	var d Downloader
+	want := "https://googledrive.com/host/" + tId
+	if d.CreateTargetUrl(tIn) != want {
+		t.Fatal("got:", d.CreateTargetUrl(tIn))
 	}
 }
 

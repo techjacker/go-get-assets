@@ -1,10 +1,10 @@
 package main
 
 import (
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
+	"path/filepath"
 	"regexp"
 )
 
@@ -14,16 +14,23 @@ type Downloader struct {
 	Assets       map[string]struct{}
 }
 
-func (d *Downloader) CreateDestPath(url string) (string, error) {
+func (d *Downloader) ExtractId(url string) string {
 
 	idReg := regexp.MustCompile(`https://drive.google.com/file/d/(\w+)/.*`)
 	id := idReg.FindStringSubmatch(url)
 
-	if len(id) < 2 || id[1] == "" {
-		return "", fmt.Errorf("%s", "no id found in url: "+url)
+	// didn't find a match
+	if len(id) < 2 {
+		return ""
 	}
+	return id[1]
+}
 
-	return "https://googledrive.com/host/" + id[1], nil
+func (d *Downloader) CreateDestPath(id string) string {
+	return filepath.Join(d.OutputDir + id)
+}
+func (d *Downloader) CreateTargetUrl(id string) string {
+	return "https://googledrive.com/host/" + id
 }
 
 type modifyStr func(s string) (string, error)
