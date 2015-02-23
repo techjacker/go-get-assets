@@ -11,7 +11,7 @@ import (
 type Downloader struct {
 	OutputDir    string
 	RelativePath string
-	Assets       map[string]struct{}
+	Assets       map[string]Asset
 }
 
 func (d *Downloader) ExtractId(url string) string {
@@ -53,17 +53,26 @@ func (d *Downloader) Download(id string, url string, wFile writeFile) error {
 	return wFile(d.CreateDestPath(id), data, 0644)
 }
 
+type Res struct {
+	res string
+}
+
 func (d *Downloader) Run() error {
 
 	var (
-		id, url string
-		err     error
+		id, url, relPath string
+		err              error
 	)
 
 	for k, _ := range d.Assets {
 		if id = d.ExtractId(k); id != "" {
 			url = d.CreateTargetUrl(id)
 			err = d.Download(id, url, ioutil.WriteFile)
+			if err != nil {
+				d.Assets[k] = Asset{"", err}
+			} else {
+				d.Assets[k] = d.CreateRelativePath(id)
+			}
 		}
 	}
 	return err

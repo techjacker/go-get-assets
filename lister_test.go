@@ -23,14 +23,14 @@ func TestSearchForAssets(t *testing.T) {
 		t.Fatalf("%s", "should not have found any assets")
 	}
 
-	a.Assets = map[string]struct{}{}
+	a.Assets = map[string]Asset{}
 	assetOne := "http://gdrive.com/2243/"
 	a.Search(assetOne)
 	if len(a.Assets) != 1 {
 		t.Fatalf("%s", "should have found one asset")
 	}
 
-	a.Assets = map[string]struct{}{}
+	a.Assets = map[string]Asset{}
 	// a.Assets = []string{}
 	assetArray := "http://gdrive.com/2243/, http://gdrive.com/diffid/"
 	a.Search(assetArray)
@@ -47,7 +47,7 @@ func TestRun(t *testing.T) {
 	// a.InputPath = filepath.Join(cwd, "fixtures", "cms.json")
 	a.InputPath = "/home/andy/go/src/github.com/techjacker/go-get-assets/fixtures/cms.json"
 	a.Needle = "http://gdrive.com"
-	a.Assets = make(map[string]struct{})
+	a.Assets = make(map[string]Asset)
 
 	if err := a.Run(); err != nil {
 		t.Fatalf("%v", err)

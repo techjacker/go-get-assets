@@ -8,13 +8,19 @@ import (
 	"strings"
 )
 
+type Asset struct {
+	Path string
+	Err  error
+}
 type Lister struct {
 	// input
 	Needle    string
 	InputPath string
 	// output
-	Data   interface{}
-	Assets map[string]struct{}
+	Data interface{}
+	// Assets map[string]struct{}
+	Assets map[string]Asset
+	// Assets map[string]interface{}
 	// Assets    map[string]string
 	// Assets    []string
 }
@@ -31,7 +37,8 @@ func (a *Lister) readFile() ([]byte, error) {
 
 func (a *Lister) SearchCell(cell string) {
 	if strings.Contains(cell, a.Needle) {
-		a.Assets[cell] = struct{}{}
+		a.Assets[cell] = Asset{}
+		// a.Assets[cell] = struct{}{}
 		// a.Assets = append(a.Assets, cell)
 	}
 }
