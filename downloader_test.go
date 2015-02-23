@@ -11,8 +11,11 @@ import (
 )
 
 var (
-	tId = "0ByPfUp1fLihSNm5SSjZoalhPQ3M"
-	tIn = "https://drive.google.com/file/d/" + tId + "/view?usp=sharing"
+	tId   = "0ByPfUp1fLihSNm5SSjZoalhPQ3M"
+	eDir  = "src/images/"
+	ePath = eDir + tId
+	eUrl  = "https://googledrive.com/host/" + tId
+	tIn   = "https://drive.google.com/file/d/" + tId + "/view?usp=sharing"
 )
 
 // func TestExtractIdMissing(t *testing.T) {
@@ -27,17 +30,16 @@ func TestExtractId(t *testing.T) {
 
 func TestCreateDestPath(t *testing.T) {
 	var d Downloader
-	d.OutputDir = "src/images"
+	d.OutputDir = eDir
 	got := d.CreateDestPath(tId)
-	if got != "src/images/"+tId {
+	if got != ePath {
 		t.Fatal("got:", got)
 	}
 }
 
 func TestCreateTargetUrl(t *testing.T) {
 	var d Downloader
-	want := "https://googledrive.com/host/" + tId
-	if d.CreateTargetUrl(tId) != want {
+	if d.CreateTargetUrl(tId) != eUrl {
 		t.Fatal("got:", d.CreateTargetUrl(tIn))
 	}
 }
@@ -50,8 +52,8 @@ func TestDownload(t *testing.T) {
 	defer ts.Close()
 
 	tWriteFile := func(filename string, data []byte, perm os.FileMode) error {
-		if filename != ts.URL {
-			return errors.New("filepath wrong")
+		if filename != tId {
+			return errors.New("filepath wrong, got: " + filename)
 		}
 		if strings.TrimSpace(string(data)) != "Hello, client" {
 			return errors.New("data wrong")
