@@ -33,7 +33,6 @@ func (d *Downloader) CreateTargetUrl(id string) string {
 	return "https://googledrive.com/host/" + id
 }
 
-type modifyStr func(s string) (string, error)
 type writeFile func(filename string, data []byte, perm os.FileMode) error
 
 func (d *Downloader) Download(id string, url string, wFile writeFile) error {
@@ -57,9 +56,8 @@ func (d *Downloader) Download(id string, url string, wFile writeFile) error {
 func (d *Downloader) Run() error {
 
 	var (
-		id  string
-		url string
-		err error
+		id, url string
+		err     error
 	)
 
 	for k, _ := range d.Assets {
