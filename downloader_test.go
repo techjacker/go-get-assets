@@ -11,11 +11,13 @@ import (
 )
 
 var (
-	tId   = "0ByPfUp1fLihSNm5SSjZoalhPQ3M"
-	eDir  = "src/images/"
-	ePath = eDir + tId
-	eUrl  = "https://googledrive.com/host/" + tId
-	tIn   = "https://drive.google.com/file/d/" + tId + "/view?usp=sharing"
+	tId      = "0ByPfUp1fLihSNm5SSjZoalhPQ3M"
+	tIn      = "https://drive.google.com/file/d/" + tId + "/view?usp=sharing"
+	tRel     = "/"
+	eDir     = "src/images/"
+	eRelPath = tRel + tId
+	ePath    = eDir + tId
+	eUrl     = "https://googledrive.com/host/" + tId
 )
 
 // func TestExtractIdMissing(t *testing.T) {
@@ -37,10 +39,18 @@ func TestCreateDestPath(t *testing.T) {
 	}
 }
 
+func TestCreateRelPath(t *testing.T) {
+	var d Downloader
+	d.RelativePath = tRel
+	if d.CreateRelPath(tId) != eRelPath {
+		t.Fatal("got:", d.CreateRelPath(tId))
+	}
+}
+
 func TestCreateTargetUrl(t *testing.T) {
 	var d Downloader
 	if d.CreateTargetUrl(tId) != eUrl {
-		t.Fatal("got:", d.CreateTargetUrl(tIn))
+		t.Fatal("got:", d.CreateTargetUrl(tId))
 	}
 }
 

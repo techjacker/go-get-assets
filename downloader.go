@@ -26,6 +26,9 @@ func (d *Downloader) ExtractId(url string) string {
 	return id[1]
 }
 
+func (d *Downloader) CreateRelPath(id string) string {
+	return filepath.Join(d.RelativePath, id)
+}
 func (d *Downloader) CreateDestPath(id string) string {
 	return filepath.Join(d.OutputDir, id)
 }
@@ -60,18 +63,17 @@ type Res struct {
 func (d *Downloader) Run() error {
 
 	var (
-		id, url, relPath string
-		err              error
+		id  string
+		err error
 	)
 
 	for k, _ := range d.Assets {
 		if id = d.ExtractId(k); id != "" {
-			url = d.CreateTargetUrl(id)
-			err = d.Download(id, url, ioutil.WriteFile)
+			err = d.Download(id, d.CreateTargetUrl(id), ioutil.WriteFile)
 			if err != nil {
 				d.Assets[k] = Asset{"", err}
 			} else {
-				d.Assets[k] = d.CreateRelativePath(id)
+				d.Assets[k] = Asset{d.CreateRelPath(id), nil}
 			}
 		}
 	}
