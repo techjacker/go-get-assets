@@ -33,7 +33,7 @@ func Run() error {
 	d := Downloader{
 		out,
 		rel,
-		make(chan []Res),
+		make(chan Res),
 	}
 
 	if err := l.Run(); err != nil {

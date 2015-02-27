@@ -11,7 +11,7 @@ import (
 type Downloader struct {
 	OutputDir    string
 	RelativePath string
-	ChanDown     chan []Res
+	ChanDown     chan Res
 }
 
 type Res struct {
@@ -49,9 +49,9 @@ func (d *Downloader) Download(id string, url string) ([]byte, error) {
 		return make([]byte, 0), err
 	}
 	defer res.Body.Close()
-	return ioutil.ReadAll(res.Body)
-	// data, err := ioutil.ReadAll(res.Body)
-	// d.ChanDown <- Res{data, err}
+	data, err := ioutil.ReadAll(res.Body)
+	d.ChanDown <- Res{data, err}
+	return data, err
 }
 
 func (d *Downloader) Run(assets map[string]Asset) error {
