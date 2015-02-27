@@ -43,22 +43,28 @@ func (d *Downloader) CreateTargetUrl(id string) string {
 
 type writeFile func(filename string, data []byte, perm os.FileMode) error
 
-func (d *Downloader) Download(id string, url string) Res {
-	res, err := http.Get(url)
+func (d *Downloader) Download(id string) {
+	res, err := http.Get(d.CreateTargetUrl(id))
 	if err != nil {
 		return Res{make([]byte, 0), err}
 	}
 	defer res.Body.Close()
 	data, err := ioutil.ReadAll(res.Body)
-	return Res{data, err}
-	// d.ChanDown <- Res{data, err}
-	// return data, err
+	d.ChanDown <- Res{data, err}
+}
+
+func (d *Downloader) WriteToDisk(id string) {
+	res := <-d.ChanDown
+	if res.Err != nil {
+		ioutil.WriteFile(d.CreateDestPath(id), res.Data, 0644)
+	}
 }
 
 func (d *Downloader) Run(assets map[string]Asset) error {
 	for k, _ := range assets {
 		if id := d.ExtractId(k); id != "" {
-			go d.Download(id, d.CreateTargetUrl(id))
+			go d.Download(id)
+			go d.WriteToDisk(id)
 		}
 	}
 	return nil
