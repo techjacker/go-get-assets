@@ -1,12 +1,13 @@
 package main
 
 import (
-	"errors"
+	"strings"
+	// "errors"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
-	"os"
-	"strings"
+	// "os"
+	// "strings"
 	"testing"
 )
 
@@ -55,28 +56,33 @@ func TestCreateTargetUrl(t *testing.T) {
 }
 
 func TestDownload(t *testing.T) {
-	var d Downloader
+	var (
+		d   Downloader
+		res = "hello"
+	)
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintln(w, "Hello, client")
+		fmt.Fprintln(w, res)
 	}))
 	defer ts.Close()
 
-	tWriteFile := func(filename string, data []byte, perm os.FileMode) error {
-		if filename != tId {
-			return errors.New("filepath wrong, got: " + filename)
-		}
-		if strings.TrimSpace(string(data)) != "Hello, client" {
-			return errors.New("data wrong")
-		}
-		if perm != 0644 {
-			return errors.New("perms wrong")
-		}
-		return nil
-	}
-
-	err := d.Download(tId, ts.URL, tWriteFile)
+	data, err := d.Download(tId, ts.URL)
 
 	if err != nil {
-		t.Fatal(err)
+		t.Error(err)
+	}
+	if strings.TrimSpace(string(data)) != res {
+		t.Error("data wrong")
 	}
 }
+
+// func TestWrite(t *testing.T) {
+// 	tWriteFile := func(filename string, data []byte, perm os.FileMode) error {
+// 		if filename != tId {
+// 			return errors.New("filepath wrong, got: " + filename)
+// 		}
+// 		if perm != 0644 {
+// 			return errors.New("perms wrong")
+// 		}
+// 		return nil
+// 	}
+// }

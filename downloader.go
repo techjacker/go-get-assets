@@ -11,7 +11,12 @@ import (
 type Downloader struct {
 	OutputDir    string
 	RelativePath string
-	Assets       map[string]Asset
+	ChanDown     chan []Res
+}
+
+type Res struct {
+	Data []byte
+	Err  error
 }
 
 func (d *Downloader) ExtractId(url string) string {
@@ -38,44 +43,30 @@ func (d *Downloader) CreateTargetUrl(id string) string {
 
 type writeFile func(filename string, data []byte, perm os.FileMode) error
 
-func (d *Downloader) Download(id string, url string, wFile writeFile) error {
-
+func (d *Downloader) Download(id string, url string) ([]byte, error) {
 	res, err := http.Get(url)
+	if err != nil {
+		return make([]byte, 0), err
+	}
 	defer res.Body.Close()
-
-	if err != nil {
-		return err
-	}
-
-	data, err := ioutil.ReadAll(res.Body)
-
-	if err != nil {
-		return err
-	}
-
-	return wFile(d.CreateDestPath(id), data, 0644)
+	return ioutil.ReadAll(res.Body)
+	// data, err := ioutil.ReadAll(res.Body)
+	// d.ChanDown <- Res{data, err}
 }
 
-type Res struct {
-	res string
-}
-
-func (d *Downloader) Run() error {
-
-	var (
-		id  string
-		err error
-	)
-
-	for k, _ := range d.Assets {
-		if id = d.ExtractId(k); id != "" {
-			err = d.Download(id, d.CreateTargetUrl(id), ioutil.WriteFile)
-			if err != nil {
-				d.Assets[k] = Asset{"", err}
-			} else {
-				d.Assets[k] = Asset{d.CreateRelPath(id), nil}
-			}
+func (d *Downloader) Run(assets map[string]Asset) error {
+	for k, _ := range assets {
+		if id := d.ExtractId(k); id != "" {
+			go d.Download(id, d.CreateTargetUrl(id))
 		}
 	}
-	return err
+	return nil
 }
+
+// ioutil.WriteFile
+
+// if err != nil {
+// 	d.Assets[k] = Asset{"", err}
+// } else {
+// 	d.Assets[k] = Asset{d.CreateRelPath(id), nil}
+// }

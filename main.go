@@ -15,7 +15,6 @@ func cwd() string {
 	return pwd
 }
 
-// in     = "/home/andy/lib/modules/go/src/github.com/techjacker/go-get-assets/fixtures/cms.json"
 // make into command line arguments
 var (
 	in     = filepath.Join(cwd(), "fixtures", "cms.json")
@@ -25,26 +24,27 @@ var (
 )
 
 func Run() error {
-	var l Lister
+	l := Lister{
+		needle,
+		in,
+		make(map[string]Asset),
+	}
 
-	l.Needle = needle
-	l.InputPath = in
+	d := Downloader{
+		out,
+		rel,
+		make(chan []Res),
+	}
 
 	if err := l.Run(); err != nil {
 		return fmt.Errorf("%v", err)
 	}
 
-	fmt.Printf("%q", l.Assets)
-
-	d := Downloader{
-		out,
-		rel,
-		l.Assets,
-	}
-
-	if err := d.Run(); err != nil {
+	if err := d.Run(l.Assets); err != nil {
 		return fmt.Errorf("%q", err)
 	}
+
+	fmt.Printf("%q", l.Assets)
 
 	return nil
 }
