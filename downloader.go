@@ -43,15 +43,16 @@ func (d *Downloader) CreateTargetUrl(id string) string {
 
 type writeFile func(filename string, data []byte, perm os.FileMode) error
 
-func (d *Downloader) Download(id string, url string) ([]byte, error) {
+func (d *Downloader) Download(id string, url string) Res {
 	res, err := http.Get(url)
 	if err != nil {
-		return make([]byte, 0), err
+		return Res{make([]byte, 0), err}
 	}
 	defer res.Body.Close()
 	data, err := ioutil.ReadAll(res.Body)
-	d.ChanDown <- Res{data, err}
-	return data, err
+	return Res{data, err}
+	// d.ChanDown <- Res{data, err}
+	// return data, err
 }
 
 func (d *Downloader) Run(assets map[string]Asset) error {

@@ -57,20 +57,20 @@ func TestCreateTargetUrl(t *testing.T) {
 
 func TestDownload(t *testing.T) {
 	var (
-		d   Downloader
-		res = "hello"
+		d    Downloader
+		body = "hello"
 	)
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintln(w, res)
+		fmt.Fprintln(w, body)
 	}))
 	defer ts.Close()
 
-	data, err := d.Download(tId, ts.URL)
+	res := d.Download(tId, ts.URL)
 
-	if err != nil {
-		t.Error(err)
+	if res.Err != nil {
+		t.Error(res.Err)
 	}
-	if strings.TrimSpace(string(data)) != res {
+	if strings.TrimSpace(string(res.Data)) != body {
 		t.Error("data wrong")
 	}
 }
