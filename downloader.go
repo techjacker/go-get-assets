@@ -8,6 +8,8 @@ import (
 	"regexp"
 )
 
+type writeFile func(filename string, data []byte, perm os.FileMode) error
+
 type Downloader struct {
 	OutputDir    string
 	RelativePath string
@@ -20,10 +22,8 @@ type Res struct {
 }
 
 func (d *Downloader) ExtractId(url string) string {
-
 	idReg := regexp.MustCompile(`https://drive.google.com/file/d/(\w+)/.*`)
 	id := idReg.FindStringSubmatch(url)
-
 	// didn't find a match
 	if len(id) < 2 {
 		return ""
@@ -41,30 +41,25 @@ func (d *Downloader) CreateTargetUrl(id string) string {
 	return "https://googledrive.com/host/" + id
 }
 
-type writeFile func(filename string, data []byte, perm os.FileMode) error
-
-func (d *Downloader) Download(id string) {
-	res, err := http.Get(d.CreateTargetUrl(id))
-	if err != nil {
-		return Res{make([]byte, 0), err}
-	}
+func (d *Downloader) Download(url string) {
+	res, err := http.Get(url)
 	defer res.Body.Close()
 	data, err := ioutil.ReadAll(res.Body)
 	d.ChanDown <- Res{data, err}
 }
 
-func (d *Downloader) WriteToDisk(id string) {
+func (d *Downloader) WriteToDisk(destPath string) {
 	res := <-d.ChanDown
 	if res.Err != nil {
-		ioutil.WriteFile(d.CreateDestPath(id), res.Data, 0644)
+		ioutil.WriteFile(destPath, res.Data, 0644)
 	}
 }
 
 func (d *Downloader) Run(assets map[string]Asset) error {
 	for k, _ := range assets {
 		if id := d.ExtractId(k); id != "" {
-			go d.Download(id)
-			go d.WriteToDisk(id)
+			go d.Download(d.CreateTargetUrl(id))
+			go d.WriteToDisk(d.CreateDestPath(id))
 		}
 	}
 	return nil

@@ -59,14 +59,22 @@ func TestDownload(t *testing.T) {
 	var (
 		d    Downloader
 		body = "hello"
+		res  Res
+		// done = make(chan bool)
 	)
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, body)
 	}))
 	defer ts.Close()
 
-	res := d.Download(tId, ts.URL)
+	go func() {
+		res = <-d.ChanDown
+		// res := <-d.ChanDown
+		// done <- true
+	}()
 
+	// <-done
+	d.Download(ts.URL)
 	if res.Err != nil {
 		t.Error(res.Err)
 	}
