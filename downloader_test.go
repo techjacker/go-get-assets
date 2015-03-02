@@ -57,10 +57,11 @@ func TestCreateTargetUrl(t *testing.T) {
 
 func TestDownload(t *testing.T) {
 	var (
-		d    Downloader
-		body = "hello"
-		res  Res
-		// done = make(chan bool)
+		d        Downloader
+		res      Res
+		body     = "hello"
+		chanDown = make(chan Res)
+		done     = make(chan bool)
 	)
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, body)
@@ -68,18 +69,20 @@ func TestDownload(t *testing.T) {
 	defer ts.Close()
 
 	go func() {
-		res = <-d.ChanDown
-		// res := <-d.ChanDown
-		// done <- true
+		res = <-chanDown // block, waiting for res value to be populated
+		done <- true     // we're done
 	}()
 
-	// <-done
-	d.Download(ts.URL)
+	d.Download(ts.URL, chanDown)
+	<-done // wait for output to be received by res
+
 	if res.Err != nil {
+		t.Error("error is not nil")
 		t.Error(res.Err)
 	}
 	if strings.TrimSpace(string(res.Data)) != body {
 		t.Error("data wrong")
+		t.Error(res.Data)
 	}
 }
 
