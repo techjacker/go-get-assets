@@ -60,7 +60,7 @@ func TestDownload(t *testing.T) {
 		d        Downloader
 		res      Res
 		body     = "hello"
-		chanDown = make(chan Res)
+		chanDown = make(chan Res, 5)
 		done     = make(chan bool)
 	)
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

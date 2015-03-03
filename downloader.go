@@ -40,14 +40,14 @@ func (d *Downloader) CreateTargetUrl(id string) string {
 	return "https://googledrive.com/host/" + id
 }
 
-func (d *Downloader) Download(url string, chanDown chan Res) {
+func (d *Downloader) Download(url string, chanDown chan<- Res) {
 	res, err := http.Get(url)
 	defer res.Body.Close()
 	data, err := ioutil.ReadAll(res.Body)
 	chanDown <- Res{data, err}
 }
 
-func (d *Downloader) WriteToDisk(destPath string, chanDown chan Res) {
+func (d *Downloader) WriteToDisk(destPath string, chanDown <-chan Res) {
 	res := <-chanDown
 	if res.Err != nil {
 		ioutil.WriteFile(destPath, res.Data, 0644)
@@ -55,7 +55,7 @@ func (d *Downloader) WriteToDisk(destPath string, chanDown chan Res) {
 }
 
 func (d *Downloader) Run(assets map[string]Asset) error {
-	chanDown := make(chan Res)
+	chanDown := make(chan Res, 5)
 	for k, _ := range assets {
 		if id := d.ExtractId(k); id != "" {
 			go d.Download(d.CreateTargetUrl(id), chanDown)
