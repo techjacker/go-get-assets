@@ -72,8 +72,7 @@ func TestDownload(t *testing.T) {
 		res = <-chanDown // block, waiting for res value to be populated
 		done <- true     // we're done
 	}()
-
-	d.Download(ts.URL, chanDown)
+	go d.Download(ts.URL, chanDown)
 	<-done // wait for output to be received by res
 
 	if res.Err != nil {
