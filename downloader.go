@@ -20,6 +20,7 @@ type Res struct {
 	Data []byte
 	Err  error
 	Url  string
+	Id   string
 }
 
 func (d *Downloader) ExtractId(url string) string {
@@ -42,11 +43,11 @@ func (d *Downloader) CreateTargetUrl(id string) string {
 	return "https://googledrive.com/host/" + id
 }
 
-func (d *Downloader) Download(url string, origUrl string, chanDown chan<- Res) {
+func (d *Downloader) Download(url string, origUrl string, id string, chanDown chan<- Res) {
 	res, err := http.Get(url)
 	defer res.Body.Close()
 	data, err := ioutil.ReadAll(res.Body)
-	chanDown <- Res{data, err, origUrl}
+	chanDown <- Res{data, err, origUrl, id}
 }
 
 func (d *Downloader) WriteToDisk(destPath string, chanDown <-chan Res) {
@@ -58,14 +59,20 @@ func (d *Downloader) WriteToDisk(destPath string, chanDown <-chan Res) {
 }
 
 func (d *Downloader) Run(assets map[string]Asset) error {
+	var err error
 	chanDown := make(chan Res, 5)
 	for k, _ := range assets {
 		if id := d.ExtractId(k); id != "" {
-			go d.Download(d.CreateTargetUrl(id), k, chanDown)
+			go d.Download(d.CreateTargetUrl(id), k, id, chanDown)
 			go d.WriteToDisk(d.CreateDestPath(id), chanDown)
 		}
 	}
-	return nil
+
+	for _, v := range d.Results {
+		err = v.Err
+	}
+
+	return err
 }
 
 // ioutil.WriteFile
