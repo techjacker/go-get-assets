@@ -59,8 +59,10 @@ func (d *Downloader) WriteToDisk(destPath string, chanDown <-chan Res) {
 }
 
 func (d *Downloader) Run(assets map[string]Asset) error {
-	var err error
-	chanDown := make(chan Res, 5)
+	var (
+		err      error
+		chanDown = make(chan Res, 5)
+	)
 	for k, _ := range assets {
 		if id := d.ExtractId(k); id != "" {
 			go d.Download(d.CreateTargetUrl(id), k, id, chanDown)
