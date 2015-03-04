@@ -28,6 +28,7 @@ func Run() error {
 		needle,
 		in,
 		make(map[string]Asset),
+		struct{}{},
 	}
 
 	d := Downloader{

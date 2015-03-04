@@ -19,6 +19,7 @@ type Lister struct {
 	// // output
 	// Assets map[string]interface{}
 	Assets map[string]Asset
+	Data   interface{}
 }
 
 func (a *Lister) readFile() ([]byte, error) {
@@ -74,7 +75,6 @@ func (a *Lister) searchMap(d map[string]interface{}) {
 // search through JSON and create map of assets
 func (a *Lister) Run() error {
 
-	var data interface{}
 	// data := struct{}{}
 	// data := interface{}{}
 	contents, err := a.readFile()
@@ -83,12 +83,12 @@ func (a *Lister) Run() error {
 		return err
 	}
 
-	if err = json.Unmarshal(contents, &data); err != nil {
+	if err = json.Unmarshal(contents, &a.Data); err != nil {
 		return err
 	}
 
 	// extract a list of assets from the JSON
-	a.searchMap(data.(map[string]interface{}))
+	a.searchMap(a.Data.(map[string]interface{}))
 
 	return nil
 }

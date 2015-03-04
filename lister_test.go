@@ -48,6 +48,7 @@ func TestRun(t *testing.T) {
 	a.InputPath = "/home/andy/go/src/github.com/techjacker/go-get-assets/fixtures/cms.json"
 	a.Needle = "http://gdrive.com"
 	a.Assets = make(map[string]Asset)
+	a.Data = struct{}{}
 
 	if err := a.Run(); err != nil {
 		t.Fatalf("%v", err)
