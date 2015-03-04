@@ -58,8 +58,8 @@ func (d *Downloader) WriteToDisk(destPath string, chanDown <-chan Res) {
 	d.Results = append(d.Results, res)
 }
 
-func (d *Downloader) RewriteUrlsInJson() {
-
+func (d *Downloader) RewriteUrlsInJson(jsonData interface{}) {
+	// d.Results
 }
 
 func (d *Downloader) Run(assets map[string]Asset) error {
