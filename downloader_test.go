@@ -60,6 +60,7 @@ func TestDownload(t *testing.T) {
 		d        Downloader
 		res      Res
 		body     = "hello"
+		origUrl  = "http://sdffdsfsd.com"
 		chanDown = make(chan Res, 5)
 		done     = make(chan bool)
 	)
@@ -72,7 +73,7 @@ func TestDownload(t *testing.T) {
 		res = <-chanDown // block, waiting for res value to be populated
 		done <- true     // we're done
 	}()
-	go d.Download(ts.URL, chanDown)
+	go d.Download(ts.URL, origUrl, chanDown)
 	<-done // wait for output to be received by res
 
 	if res.Err != nil {
@@ -82,6 +83,10 @@ func TestDownload(t *testing.T) {
 	if strings.TrimSpace(string(res.Data)) != body {
 		t.Error("data wrong")
 		t.Error(res.Data)
+	}
+	if res.Url != origUrl {
+		t.Error("origUrl not passed")
+		t.Error(origUrl)
 	}
 }
 

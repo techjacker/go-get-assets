@@ -30,7 +30,11 @@ func Run() error {
 		make(map[string]Asset),
 	}
 
-	d := Downloader{out, rel}
+	d := Downloader{
+		out,
+		rel,
+		[]Res{},
+	}
 
 	if err := l.Run(); err != nil {
 		return fmt.Errorf("%v", err)

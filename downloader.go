@@ -13,11 +13,13 @@ type writeFile func(filename string, data []byte, perm os.FileMode) error
 type Downloader struct {
 	OutputDir    string
 	RelativePath string
+	Results      []Res
 }
 
 type Res struct {
 	Data []byte
 	Err  error
+	Url  string
 }
 
 func (d *Downloader) ExtractId(url string) string {
@@ -40,25 +42,26 @@ func (d *Downloader) CreateTargetUrl(id string) string {
 	return "https://googledrive.com/host/" + id
 }
 
-func (d *Downloader) Download(url string, chanDown chan<- Res) {
+func (d *Downloader) Download(url string, origUrl string, chanDown chan<- Res) {
 	res, err := http.Get(url)
 	defer res.Body.Close()
 	data, err := ioutil.ReadAll(res.Body)
-	chanDown <- Res{data, err}
+	chanDown <- Res{data, err, origUrl}
 }
 
 func (d *Downloader) WriteToDisk(destPath string, chanDown <-chan Res) {
 	res := <-chanDown
 	if res.Err != nil {
-		ioutil.WriteFile(destPath, res.Data, 0644)
+		res.Err = ioutil.WriteFile(destPath, res.Data, 0644)
 	}
+	d.Results = append(d.Results, res)
 }
 
 func (d *Downloader) Run(assets map[string]Asset) error {
 	chanDown := make(chan Res, 5)
 	for k, _ := range assets {
 		if id := d.ExtractId(k); id != "" {
-			go d.Download(d.CreateTargetUrl(id), chanDown)
+			go d.Download(d.CreateTargetUrl(id), k, chanDown)
 			go d.WriteToDisk(d.CreateDestPath(id), chanDown)
 		}
 	}
