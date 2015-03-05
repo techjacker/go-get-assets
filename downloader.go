@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -59,7 +60,10 @@ func (d *Downloader) WriteToDisk(destPath string, chanDown <-chan Res) {
 }
 
 func (d *Downloader) RewriteUrlsInJson(jsonData interface{}) {
-	// d.Results
+	for _, v := range d.Results {
+		fmt.Printf("%q", v)
+	}
+	return jsonData
 }
 
 func (d *Downloader) Run(assets map[string]Asset) error {

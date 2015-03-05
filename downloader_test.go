@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"strings"
 	// "errors"
 	"fmt"
@@ -52,6 +53,36 @@ func TestCreateTargetUrl(t *testing.T) {
 	var d Downloader
 	if d.CreateTargetUrl(tId) != eUrl {
 		t.Fatal("got:", d.CreateTargetUrl(tId))
+	}
+}
+
+func TestRewriteUrlsInJson(t *testing.T) {
+	var d Downloader
+
+	d.RelativePath = "/images"
+	d.Results = []Res{
+		Res{
+			[]byte{struct{}{}},
+			nil,
+			"http://gdrive.com/diff.jpg",
+			"diff",
+		},
+	}
+
+	var v interface{}
+	input := []byte(`{
+		"mapofphotos": {
+	    "photourl": "http://gdrive.com/diff.jpg",
+	    "nastyarray": ["sdfsd"],
+	    "noaphoto": "sdfsd"
+	  }
+  }`)
+	json.Unmarshal(input, &v)
+
+	v = d.RewriteUrlsInJson(v)
+	if v["mapofphotos"]["photourl"] != "/images/diff" {
+		t.Fatal("got:", v["mapofphotos"]["photourl"])
+		t.Fatal("want:", "/images/diff")
 	}
 }
 
