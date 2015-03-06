@@ -59,11 +59,10 @@ func (d *Downloader) WriteToDisk(destPath string, chanDown <-chan Res) {
 	d.Results = append(d.Results, res)
 }
 
-func (d *Downloader) RewriteUrlsInJson(jsonData interface{}) {
+func (d *Downloader) RewriteUrlsInJson(data *interface{}) {
 	for _, v := range d.Results {
 		fmt.Printf("%q", v)
 	}
-	return jsonData
 }
 
 func (d *Downloader) Run(assets map[string]Asset) error {
