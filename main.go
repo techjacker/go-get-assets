@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 )
 
-func cwd() string {
+func Cwd() string {
 	pwd, err := os.Getwd()
 	if err != nil {
 		fmt.Println(err)
@@ -17,10 +17,11 @@ func cwd() string {
 
 // make into command line arguments
 var (
-	in     = filepath.Join(cwd(), "fixtures", "cms.json")
-	out    = filepath.Join(cwd(), "src", "images")
-	rel    = "/images"
-	needle = "https://drive.google.com/file/d/"
+	in        = filepath.Join(Cwd(), "fixtures", "cms.json")
+	out       = filepath.Join(Cwd(), "fixtures", "cms.downloaded.json")
+	imagesDir = filepath.Join(Cwd(), "src", "images")
+	rel       = "/images"
+	needle    = "https://drive.google.com/file/d/"
 )
 
 func Run() error {
@@ -32,9 +33,16 @@ func Run() error {
 	}
 
 	d := Downloader{
-		out,
+		imagesDir,
 		rel,
 		[]Res{},
+	}
+
+	r := Renamer{
+		in,
+		out,
+		rel,
+		needle,
 	}
 
 	if err := l.Run(); err != nil {
@@ -42,6 +50,10 @@ func Run() error {
 	}
 
 	if err := d.Run(l.Assets); err != nil {
+		return fmt.Errorf("%q", err)
+	}
+
+	if err := r.Run(d.Results); err != nil {
 		return fmt.Errorf("%q", err)
 	}
 

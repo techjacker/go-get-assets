@@ -59,14 +59,6 @@ func (d *Downloader) WriteToDisk(destPath string, chanDown <-chan Res) {
 	d.Results = append(d.Results, res)
 }
 
-func (d *Downloader) RewriteUrlsInJson(data map[string]interface{}) map[string]interface{} {
-	// func (d *Downloader) RewriteUrlsInJson(data *interface{}) {
-	for _, v := range d.Results {
-		fmt.Printf("%q", v)
-	}
-	return data
-}
-
 func (d *Downloader) Run(assets map[string]Asset) error {
 	var (
 		err      error
@@ -85,11 +77,3 @@ func (d *Downloader) Run(assets map[string]Asset) error {
 
 	return err
 }
-
-// ioutil.WriteFile
-
-// if err != nil {
-// 	d.Assets[k] = Asset{"", err}
-// } else {
-// 	d.Assets[k] = Asset{d.CreateRelPath(id), nil}
-// }

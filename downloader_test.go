@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"strings"
 	// "errors"
 	"fmt"
@@ -56,65 +55,12 @@ func TestCreateTargetUrl(t *testing.T) {
 	}
 }
 
-func TestRewriteUrlsInJson(t *testing.T) {
-	var (
-		// photos map[string]string
-		d Downloader
-		v map[string]interface{}
-	)
-
-	d.RelativePath = "/images"
-	d.Results = []Res{
-		Res{
-			[]byte{},
-			nil,
-			"http://gdrive.com/diff.jpg",
-			"diff",
-		},
+type AssetsTest struct {
+	Mapofphotos struct {
+		Photourl  string
+		Somearray []string
+		Notaphoto string
 	}
-
-	// input := map[string]interface{}{
-	// 	"mapofphotos": map[string]interface{}{
-	// 		"photourl":   "http://gdrive.com/diff.jpg",
-	// 		"nastyarray": "sdfsd",
-	// 		"noaphoto":   "sdfsd",
-	// 	},
-	// }
-	// photourl := input["mapofphotos"].(map[string]interface{})["photourl"]
-
-	input := []byte(`{
-		"mapofphotos": {
-			"photourl":   "http://gdrive.com/diff.jpg",
-			"nastyarray": "sdfsd",
-			"noaphoto":   "sdfsd",
-		},
-	}`)
-
-	json.Unmarshal(input, &v)
-	v = d.RewriteUrlsInJson(v)
-
-	// photourl := input["mapofphotos"].(map[string]interface{})["photourl"]
-
-	// photourl := v["mapofphotos"]
-
-	// for _, vv := range v["mapofphotos"].(map[string]interface{}) {
-	// 	switch vvv := vv.(type) {
-	// 	case map[string]string:
-	// 		photos = vvv
-	// 	default:
-	// 		// t.Log(vvv)
-	// 	}
-	// }
-
-	// photourl := v["mapofphotos"].(map[string]interface{})
-	// t.Log("---------------")
-	// t.Log(photos)
-	// t.Log("---------------")
-
-	// if v["mapofphotos"]["photourl"] != "/images/diff" {
-	// 	t.Fatal("got:", v["mapofphotos"]["photourl"])
-	// 	t.Fatal("want:", "/images/diff")
-	// }
 }
 
 func TestDownload(t *testing.T) {
