@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	// "io"
 	"os"
 	"path/filepath"
 )
@@ -38,12 +39,12 @@ func Run() error {
 		[]Res{},
 	}
 
-	r := Renamer{
-		in,
-		out,
-		rel,
-		needle,
-	}
+	// r := Renamer{
+	// 	in,
+	// 	out,
+	// 	rel,
+	// 	needle,
+	// }
 
 	if err := l.Run(); err != nil {
 		return fmt.Errorf("%v", err)
@@ -53,9 +54,9 @@ func Run() error {
 		return fmt.Errorf("%q", err)
 	}
 
-	if err := r.Run(d.Results); err != nil {
-		return fmt.Errorf("%q", err)
-	}
+	// if err := r.Run(d.Results, io.Writer{}); err != nil {
+	// 	return fmt.Errorf("%q", err)
+	// }
 
 	fmt.Printf("%q", l.Assets)
 
