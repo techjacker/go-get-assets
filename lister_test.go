@@ -2,7 +2,7 @@ package main
 
 import (
 	// "flag"
-	// "path/filepath"
+	"path/filepath"
 	"testing"
 )
 
@@ -44,8 +44,7 @@ func TestRun(t *testing.T) {
 	// t.Errorf("%v", &cwd)
 
 	var a Lister
-	// a.InputPath = filepath.Join(cwd, "fixtures", "cms.json")
-	a.InputPath = "/home/andy/go/src/github.com/techjacker/go-get-assets/fixtures/cms.json"
+	a.InputPath = filepath.Join(Cwd(), "fixtures", "cms.json")
 	a.Needle = "http://gdrive.com"
 	a.Assets = make(map[string]Asset)
 	a.Data = struct{}{}
