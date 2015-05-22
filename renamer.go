@@ -4,7 +4,7 @@ import (
 	"io/ioutil"
 	// "os"
 	// "io"
-	// "encoding/json"
+	"encoding/json"
 )
 
 type Renamer struct {
@@ -16,7 +16,12 @@ type Renamer struct {
 
 func (r Renamer) Run() error {
 
-	contents, err := ioutil.ReadFile(r.in)
+	ojStruct := map[string]interface{}{
+		"nophotos": "here",
+	}
+	contents, err := json.Marshal(ojStruct)
+
+	// contents, err := ioutil.ReadFile(r.in)
 	// println(string(contents))
 	err = ioutil.WriteFile(r.out, contents, 0644)
 

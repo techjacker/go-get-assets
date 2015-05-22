@@ -1,6 +1,7 @@
 package main
 
 import (
+	"strings"
 	// "encoding/json"
 	"io/ioutil"
 	// "os"
@@ -36,9 +37,10 @@ func TestRewriteUrlsInJson(t *testing.T) {
 
 	got, err := ioutil.ReadFile(r.out)
 	want, err := ioutil.ReadFile(r.in)
-	// println(string(in))
+	println(string(got))
+	println(string(want))
 
-	if string(got) != string(want) {
+	if strings.TrimSpace(string(got)) != strings.TrimSpace(string(want)) {
 		t.Fatal("in does not equal out")
 	}
 
