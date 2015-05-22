@@ -1,45 +1,26 @@
 package main
 
 import (
-	"encoding/json"
+	// "encoding/json"
 	"io/ioutil"
-	"os"
+	// "os"
 	"path/filepath"
 	"testing"
 )
 
 func TestRewriteUrlsInJson(t *testing.T) {
 
-	type CmsExample struct {
-		Nophotos string `json:"nophotos"`
-		// Mapofphotos struct {
-		// 	Photourl   string
-		// 	Nastyarray []string
-		// 	Notaphoto  string
-		// }
-		// Clients []struct {
-		// 	Name     string
-		// 	Photourl string
-		// }
-		// Projects []struct {
-		// 	Descriptionsub     string
-		// 	Descriptionsublink string
-		// 	// Photourl           []interface{}
-		// 	Photourl string
-		// }
-	}
-
-	outFile, err := ioutil.TempFile("", "renamer-test")
+	of, err := ioutil.TempFile("", "renamer-test")
+	defer of.Close()
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	var (
-		out    = outFile.Name()
 		in     = filepath.Join(Cwd(), "fixtures", "cms.strong.json")
+		out    = of.Name()
 		rel    = "/images"
 		needle = "https://drive.google.com/file/d/"
-		// result CmsExample
 	)
 
 	r := Renamer{
@@ -49,38 +30,16 @@ func TestRewriteUrlsInJson(t *testing.T) {
 		needle,
 	}
 
-	err = r.Run()
-	if err != nil {
+	if err = r.Run(); err != nil {
 		t.Fatal(err)
 	}
 
-	result := &CmsExample{}
-	// outFileModified, err := os.OpenFile(outFile.Name(), os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0600)
-	outFileModified, err := os.OpenFile(outFile.Name(), os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0600)
-	if err != nil {
-		t.Fatal(err)
-	}
-	// err = json.NewDecoder(outFile).Decode(result)
-	err = json.NewDecoder(outFileModified).Decode(result)
-	// err = mapstructure.Decode(outFile, result)
-	defer outFile.Close()
-	defer outFileModified.Close()
-	// mapstructure.Decode(outFileModified, result)
+	got, err := ioutil.ReadFile(r.out)
+	want, err := ioutil.ReadFile(r.in)
+	// println(string(in))
 
-	if err != nil {
-		t.Fatal(err)
+	if string(got) != string(want) {
+		t.Fatal("in does not equal out")
 	}
-	t.Log(out)
-	t.Logf("%v", result)
-	// results := []Res{
-	// 	Res{
-	// 		[]byte{},
-	// 		nil,
-	// 		"http://gdrive.com/diff.jpg",
-	// 		"diff",
-	// 	},
-	// }
-
-	// err = r.Run(results)
 
 }
