@@ -1,11 +1,10 @@
 package main
 
 import (
-	"strings"
-	// "encoding/json"
+	"github.com/clbanning/mxj"
 	"io/ioutil"
-	// "os"
 	"path/filepath"
+	"reflect"
 	"testing"
 )
 
@@ -37,11 +36,14 @@ func TestRewriteUrlsInJson(t *testing.T) {
 
 	got, err := ioutil.ReadFile(r.out)
 	want, err := ioutil.ReadFile(r.in)
-	println(string(got))
-	println(string(want))
 
-	if strings.TrimSpace(string(got)) != strings.TrimSpace(string(want)) {
-		t.Fatal("in does not equal out")
+	gotMap, err := mxj.NewMapJson(got)
+	wantMap, err := mxj.NewMapJson(want)
+
+	if !reflect.DeepEqual(gotMap, wantMap) {
+		t.Fatal("want does not equal got")
 	}
 
+	// v, err := m.ValuesForKey("nophotos")
+	// println(v[0].(string))
 }
