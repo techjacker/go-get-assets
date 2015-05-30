@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/clbanning/mxj"
+	"encoding/json"
 	"io/ioutil"
 	"path/filepath"
 	"reflect"
@@ -17,10 +17,11 @@ func TestRewriteUrlsInJson(t *testing.T) {
 	}
 
 	var (
-		in     = filepath.Join(Cwd(), "fixtures", "cms.strong.json")
-		out    = of.Name()
-		rel    = "/images"
-		needle = "https://drive.google.com/file/d/"
+		in        = filepath.Join(Cwd(), "fixtures", "cms.strong.json")
+		out       = of.Name()
+		rel       = "/images"
+		needle    = "https://drive.google.com/file/d/"
+		want, got map[string]interface{}
 	)
 
 	r := Renamer{
@@ -34,16 +35,12 @@ func TestRewriteUrlsInJson(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	got, err := ioutil.ReadFile(r.out)
-	want, err := ioutil.ReadFile(r.in)
-
-	gotMap, err := mxj.NewMapJson(got)
-	wantMap, err := mxj.NewMapJson(want)
-
-	if !reflect.DeepEqual(gotMap, wantMap) {
+	i, err := ioutil.ReadFile(r.in)
+	o, err := ioutil.ReadFile(r.out)
+	json.Unmarshal(i, &want)
+	json.Unmarshal(o, &got)
+	// t.Logf("%v", o["mapofphotos"].(map[string]interface{})["photourl"])
+	if !reflect.DeepEqual(want, got) {
 		t.Fatal("want does not equal got")
 	}
-
-	// v, err := m.ValuesForKey("nophotos")
-	// println(v[0].(string))
 }

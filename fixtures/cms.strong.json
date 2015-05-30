@@ -1,3 +1,6 @@
 {
-  "nophotos": "here"
+  "nophotos": "here",
+  "mapofphotos": {
+    "photourl": "https://drive.google.com/file/d/diff.jpg"
+  }
 }
