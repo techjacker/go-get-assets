@@ -17,7 +17,8 @@ func TestRewriteUrlsInJson(t *testing.T) {
 	}
 
 	var (
-		in        = filepath.Join(Cwd(), "fixtures", "cms.strong.json")
+		in        = filepath.Join(Cwd(), "fixtures", "cms.renamer.input.json")
+		expected  = filepath.Join(Cwd(), "fixtures", "cms.renamer.expected.json")
 		out       = of.Name()
 		rel       = "/images"
 		needle    = "https://drive.google.com/file/d/"
@@ -35,9 +36,9 @@ func TestRewriteUrlsInJson(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	i, err := ioutil.ReadFile(r.in)
+	w, err := ioutil.ReadFile(expected)
 	o, err := ioutil.ReadFile(r.out)
-	json.Unmarshal(i, &want)
+	json.Unmarshal(w, &want)
 	json.Unmarshal(o, &got)
 	// t.Logf("%v", o["mapofphotos"].(map[string]interface{})["photourl"])
 	if !reflect.DeepEqual(want, got) {
