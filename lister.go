@@ -11,36 +11,46 @@ type Asset struct {
 }
 
 type Lister struct {
+	Needle string
 	Assets map[string]Asset
-	JsonLooper
-	// SearcherARunner
+	Searcher
 }
 
-func (a *Lister) SearchCell(cell string) {
-	if strings.Contains(cell, a.Needle) {
-		a.Assets[cell] = Asset{}
-		// a.Assets[cell] = struct{}{}
-		// a.Assets = append(a.Assets, cell)
+func NewLister(needle string, inputPath string) *Lister {
+	var l Lister
+	l.Needle = needle
+	l.Assets = map[string]Asset{}
+	l.Searcher.InputPath = inputPath
+	l.Searcher.Data = struct{}{}
+	l.Searcher.SearchCell = l.SearchCell
+	return &l
+}
+
+func (l *Lister) SearchCell(cell string) {
+	if strings.Contains(cell, l.Needle) {
+		l.Assets[cell] = Asset{}
+		// l.Assets[cell] = struct{}{}
+		// l.Assets = append(l.Assets, cell)
 	}
 }
 
 // search through JSON and create map of assets
-func (a *Lister) Run() error {
+func (l *Lister) Run() error {
 
 	// data := struct{}{}
 	// data := interface{}{}
-	contents, err := a.readFile()
+	contents, err := l.readFile()
 
 	if err != nil {
 		return err
 	}
 
-	if err = json.Unmarshal(contents, &a.Data); err != nil {
+	if err = json.Unmarshal(contents, &l.Data); err != nil {
 		return err
 	}
 
 	// extract a list of assets from the JSON
-	a.searchMap(a.Data.(map[string]interface{}))
+	l.searchMap(l.Data.(map[string]interface{}))
 
 	return nil
 }

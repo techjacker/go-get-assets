@@ -13,16 +13,15 @@ type SearcherRunner interface {
 	Run() error
 }
 
-type JsonLooper struct {
-	Needle     string
+type Searcher struct {
 	InputPath  string
 	Data       interface{}
 	SearchCell func(string)
 }
 
-func (a *JsonLooper) readFile() ([]byte, error) {
+func (s *Searcher) readFile() ([]byte, error) {
 	// read file
-	file, err := ioutil.ReadFile(a.InputPath)
+	file, err := ioutil.ReadFile(s.InputPath)
 	in := bytes.NewReader(file)
 	// create buffer of contents
 	buf := new(bytes.Buffer)
@@ -30,34 +29,34 @@ func (a *JsonLooper) readFile() ([]byte, error) {
 	return buf.Bytes(), err
 }
 
-func (a *JsonLooper) Search(cell string) {
+func (s *Searcher) Search(cell string) {
 	for _, p := range strings.Split(cell, ",") {
-		a.SearchCell(strings.TrimSpace(p))
+		s.SearchCell(strings.TrimSpace(p))
 	}
 }
 
-func (a *JsonLooper) searchArray(d []interface{}) {
+func (s *Searcher) searchArray(d []interface{}) {
 	for _, v := range d {
 		switch v.(type) {
 		case string:
-			a.Search(v.(string))
+			s.Search(v.(string))
 		case []interface{}:
-			a.searchArray(v.([]interface{}))
+			s.searchArray(v.([]interface{}))
 		case map[string]interface{}:
-			a.searchMap(v.(map[string]interface{}))
+			s.searchMap(v.(map[string]interface{}))
 		}
 	}
 }
 
-func (a *JsonLooper) searchMap(d map[string]interface{}) {
+func (s *Searcher) searchMap(d map[string]interface{}) {
 	for _, v := range d {
 		switch v.(type) {
 		case string:
-			a.Search(v.(string))
+			s.Search(v.(string))
 		case []interface{}:
-			a.searchArray(v.([]interface{}))
+			s.searchArray(v.([]interface{}))
 		case map[string]interface{}:
-			a.searchMap(v.(map[string]interface{}))
+			s.searchMap(v.(map[string]interface{}))
 		}
 	}
 }
