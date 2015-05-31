@@ -18,12 +18,13 @@ func TestSearchForAssets(t *testing.T) {
 	var a Lister
 
 	a.Needle = "http://gdrive.com"
+	a.Assets = map[string]Asset{}
+	a.JsonLooper.SearchCell = a.SearchCell
 	a.Search("http://themummyofmulberryavenue.com")
 	if len(a.Assets) != 0 {
 		t.Fatalf("%s", "should not have found any assets")
 	}
 
-	a.Assets = map[string]Asset{}
 	assetOne := "http://gdrive.com/2243/"
 	a.Search(assetOne)
 	if len(a.Assets) != 1 {
@@ -44,6 +45,7 @@ func TestRun(t *testing.T) {
 	// t.Errorf("%v", &cwd)
 
 	var a Lister
+	a.JsonLooper.SearchCell = a.SearchCell
 	a.InputPath = filepath.Join(Cwd(), "fixtures", "cms.json")
 	a.Needle = "http://gdrive.com"
 	a.Assets = make(map[string]Asset)
