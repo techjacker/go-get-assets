@@ -3,43 +3,26 @@ package main
 import (
 	"encoding/json"
 	"io/ioutil"
-	"os"
 	"path/filepath"
+	"reflect"
 	"testing"
 )
 
 func TestRewriteUrlsInJson(t *testing.T) {
 
-	type CmsExample struct {
-		Nophotos string `json:"nophotos"`
-		// Mapofphotos struct {
-		// 	Photourl   string
-		// 	Nastyarray []string
-		// 	Notaphoto  string
-		// }
-		// Clients []struct {
-		// 	Name     string
-		// 	Photourl string
-		// }
-		// Projects []struct {
-		// 	Descriptionsub     string
-		// 	Descriptionsublink string
-		// 	// Photourl           []interface{}
-		// 	Photourl string
-		// }
-	}
-
-	outFile, err := ioutil.TempFile("", "renamer-test")
+	of, err := ioutil.TempFile("", "renamer-test")
+	defer of.Close()
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	var (
-		out    = outFile.Name()
-		in     = filepath.Join(Cwd(), "fixtures", "cms.strong.json")
-		rel    = "/images"
-		needle = "https://drive.google.com/file/d/"
-		// result CmsExample
+		in        = filepath.Join(Cwd(), "fixtures", "cms.renamer.input.json")
+		expected  = filepath.Join(Cwd(), "fixtures", "cms.renamer.expected.json")
+		out       = of.Name()
+		rel       = "/images"
+		needle    = "https://drive.google.com/file/d/"
+		want, got map[string]interface{}
 	)
 
 	r := Renamer{
@@ -49,38 +32,16 @@ func TestRewriteUrlsInJson(t *testing.T) {
 		needle,
 	}
 
-	err = r.Run()
-	if err != nil {
+	if err = r.Run(); err != nil {
 		t.Fatal(err)
 	}
 
-	result := &CmsExample{}
-	// outFileModified, err := os.OpenFile(outFile.Name(), os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0600)
-	outFileModified, err := os.OpenFile(outFile.Name(), os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0600)
-	if err != nil {
-		t.Fatal(err)
+	w, err := ioutil.ReadFile(expected)
+	o, err := ioutil.ReadFile(r.out)
+	json.Unmarshal(w, &want)
+	json.Unmarshal(o, &got)
+	// t.Logf("%v", o["mapofphotos"].(map[string]interface{})["photourl"])
+	if !reflect.DeepEqual(want, got) {
+		t.Fatal("want does not equal got")
 	}
-	// err = json.NewDecoder(outFile).Decode(result)
-	err = json.NewDecoder(outFileModified).Decode(result)
-	// err = mapstructure.Decode(outFile, result)
-	defer outFile.Close()
-	defer outFileModified.Close()
-	// mapstructure.Decode(outFileModified, result)
-
-	if err != nil {
-		t.Fatal(err)
-	}
-	t.Log(out)
-	t.Logf("%v", result)
-	// results := []Res{
-	// 	Res{
-	// 		[]byte{},
-	// 		nil,
-	// 		"http://gdrive.com/diff.jpg",
-	// 		"diff",
-	// 	},
-	// }
-
-	// err = r.Run(results)
-
 }
