@@ -25,19 +25,19 @@ func TestRewriteUrlsInJson(t *testing.T) {
 		want, got map[string]interface{}
 	)
 
-	r := Renamer{
+	r := NewRenamer(
+		needle,
 		in,
 		out,
 		rel,
-		needle,
-	}
+	)
 
 	if err = r.Run(); err != nil {
 		t.Fatal(err)
 	}
 
 	w, err := ioutil.ReadFile(expected)
-	o, err := ioutil.ReadFile(r.out)
+	o, err := ioutil.ReadFile(r.Out)
 	json.Unmarshal(w, &want)
 	json.Unmarshal(o, &got)
 	// t.Logf("%v", o["mapofphotos"].(map[string]interface{})["photourl"])
