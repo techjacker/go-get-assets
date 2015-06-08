@@ -30,8 +30,11 @@ func TestSearchForAssets(t *testing.T) {
 }
 
 func TestRun(t *testing.T) {
-	var inputPath string = filepath.Join(Cwd(), "fixtures", "cms.json")
-	l := NewLister("http://gdrive.com", inputPath)
+
+	var (
+		inputPath string  = filepath.Join(Cwd(), "fixtures", "cms.json")
+		l         *Lister = NewLister("http://gdrive.com", inputPath)
+	)
 
 	if err := l.Run(); err != nil {
 		t.Fatalf("%v", err)
