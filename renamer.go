@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"strings"
 )
@@ -36,16 +37,31 @@ func (r Renamer) SearchCell(cell string) {
 	}
 }
 
-func (r Renamer) Run() error {
+func (r Renamer) readJSONFromFile(inputPath string) (map[string]interface{}, error) {
+
+	contents, err := ioutil.ReadFile(inputPath)
+	if err != nil {
+		return nil, err
+	}
 
 	var c map[string]interface{}
-	contents, err := ioutil.ReadFile(r.InputPath)
+	json.Unmarshal(contents, &c)
 
+	return c, err
+}
+
+func (r Renamer) Run() error {
+
+	contents, err := ioutil.ReadFile(r.InputPath)
 	if err != nil {
 		return err
 	}
 
-	json.Unmarshal(contents, &c)
+	c, err := r.readJSONFromFile(r.InputPath)
+
+	println(c)
+	fmt.Printf("%v", c)
+	r.searchMap(c)
 
 	err = ioutil.WriteFile(r.Out, contents, 0644)
 	return err
