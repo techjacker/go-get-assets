@@ -25,18 +25,8 @@ var (
 )
 
 func Run() error {
-	var l Lister
 
-	l.Assets = make(map[string]Asset)
-	l.Needle = needle
-	l.InputPath = in
-	l.Data = struct{}{}
-
-	// l := Lister{
-	// 	make(map[string]Asset),
-	// 	JsonLooper{needle, in, struct{}{}, Lister.SearchCell},
-	// 	// needle, in, struct{}{},
-	// }
+	l := NewLister(needle, in)
 
 	d := Downloader{
 		imagesDir,
