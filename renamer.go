@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"strings"
 )
@@ -50,19 +49,19 @@ func (r Renamer) readJSONFromFile(inputPath string) (map[string]interface{}, err
 	return c, err
 }
 
-func (r Renamer) Run() error {
-
-	contents, err := ioutil.ReadFile(r.InputPath)
+func (r Renamer) writeJSONToFile(c interface{}) error {
+	contents, err := json.Marshal(c)
 	if err != nil {
 		return err
 	}
+	return ioutil.WriteFile(r.Out, contents, 0644)
+}
 
+func (r Renamer) Run() error {
 	c, err := r.readJSONFromFile(r.InputPath)
-
-	println(c)
-	fmt.Printf("%v", c)
+	if err != nil {
+		return err
+	}
 	r.searchMap(c)
-
-	err = ioutil.WriteFile(r.Out, contents, 0644)
-	return err
+	return r.writeJSONToFile(c)
 }
