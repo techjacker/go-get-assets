@@ -24,7 +24,7 @@ type Res struct {
 	Id   string
 }
 
-func (d *Downloader) ExtractId(url string) string {
+func ExtractGdriveID(url string) string {
 	idReg := regexp.MustCompile(`https://drive.google.com/file/d/(\w+)/.*`)
 	id := idReg.FindStringSubmatch(url)
 	// didn't find a match
@@ -65,7 +65,7 @@ func (d *Downloader) Run(assets map[string]Asset) error {
 		chanDown = make(chan Res, 5)
 	)
 	for k, _ := range assets {
-		if id := d.ExtractId(k); id != "" {
+		if id := ExtractGdriveID(k); id != "" {
 			go d.Download(d.CreateTargetUrl(id), k, id, chanDown)
 			go d.WriteToDisk(d.CreateDestPath(id), chanDown)
 		}

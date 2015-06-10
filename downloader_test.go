@@ -25,9 +25,8 @@ var (
 // bad string goes here
 
 func TestExtractId(t *testing.T) {
-	var d Downloader
-	if d.ExtractId(tIn) != tId {
-		t.Fatal("got:", d.ExtractId(tIn))
+	if ExtractGdriveID(tIn) != tId {
+		t.Fatal("got:", ExtractGdriveID(tIn))
 	}
 }
 

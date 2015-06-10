@@ -30,9 +30,9 @@ func NewRenamer(needle string, inputPath string, out string, rel string) *Rename
 }
 
 func (r Renamer) SearchCell(cell string) {
-	for _, s := range strings.Split(cell, ",") {
-		// r.SearchCell(strings.TrimSpace(s))
-		println(strings.TrimSpace(s))
+	if strings.Contains(cell, r.Needle) {
+		renamedURL := r.Rel + "/" + ExtractGdriveID(tIn)
+		println(renamedURL)
 	}
 }
 
