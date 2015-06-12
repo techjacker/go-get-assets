@@ -12,3 +12,13 @@ https://googledrive.com/host/0ByPfUp1fLihSNm5SSjZoalhPQ3M
 wget
 
 saves into file: 0ByPfUp1fLihSNm5SSjZoalhPQ3M
+
+
+
+`Go
+    // Create the directories in the path
+    file := filepath.Join(d.dir, key)
+    if err := os.MkdirAll(filepath.Dir(file), 0775); err != nil {
+        panic(err)
+    }
+`
