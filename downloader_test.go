@@ -25,8 +25,10 @@ var (
 // bad string goes here
 
 func TestExtractId(t *testing.T) {
-	if ExtractGdriveID(tIn) != tId {
-		t.Fatal("got:", ExtractGdriveID(tIn))
+	d := NewDownloader("", "")
+	got := d.Extracter.Gdrive(tIn)
+	if got != tId {
+		t.Fatal("got:", got)
 	}
 }
 

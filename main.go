@@ -27,12 +27,7 @@ var (
 func Run() error {
 
 	l := NewLister(needle, in)
-
-	d := Downloader{
-		imagesDir,
-		rel,
-		[]Res{},
-	}
+	d := NewDownloader(imagesDir, rel)
 
 	// r := Renamer{
 	// 	in,

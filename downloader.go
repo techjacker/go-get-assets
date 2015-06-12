@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"regexp"
 )
 
 type writeFile func(filename string, data []byte, perm os.FileMode) error
@@ -15,6 +14,7 @@ type Downloader struct {
 	OutputDir    string
 	RelativePath string
 	Results      []Res
+	Extracter
 }
 
 type Res struct {
@@ -24,14 +24,13 @@ type Res struct {
 	Id   string
 }
 
-func ExtractGdriveID(url string) string {
-	idReg := regexp.MustCompile(`https://drive.google.com/file/d/(\w+)/.*`)
-	id := idReg.FindStringSubmatch(url)
-	// didn't find a match
-	if len(id) < 2 {
-		return ""
+func NewDownloader(outDir string, relPath string) *Downloader {
+	return &Downloader{
+		outDir,
+		relPath,
+		[]Res{},
+		Extracter{`https://drive.google.com/file/d/(\w+)/.*`},
 	}
-	return id[1]
 }
 
 func (d *Downloader) CreateRelPath(id string) string {
@@ -65,7 +64,8 @@ func (d *Downloader) Run(assets map[string]Asset) error {
 		chanDown = make(chan Res, 5)
 	)
 	for k, _ := range assets {
-		if id := ExtractGdriveID(k); id != "" {
+		if id := d.Extracter.Gdrive(k); id != "" {
+			// if id := ExtractGdriveID(k); id != "" {
 			go d.Download(d.CreateTargetUrl(id), k, id, chanDown)
 			go d.WriteToDisk(d.CreateDestPath(id), chanDown)
 		}
