@@ -26,12 +26,13 @@ func NewLister(needle string, inputPath string) *Lister {
 	return &l
 }
 
-func (l *Lister) SearchCell(cell string) {
+func (l *Lister) SearchCell(cell string) string {
 	if strings.Contains(cell, l.Needle) {
 		l.Assets[cell] = Asset{}
 		// l.Assets[cell] = struct{}{}
 		// l.Assets = append(l.Assets, cell)
 	}
+	return cell
 }
 
 // search through JSON and create map of assets

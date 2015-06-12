@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"io/ioutil"
+	"regexp"
 	"strings"
 )
 
@@ -29,11 +30,23 @@ func NewRenamer(needle string, inputPath string, out string, rel string) *Rename
 	return &r
 }
 
-func (r Renamer) SearchCell(cell string) {
-	if strings.Contains(cell, r.Needle) {
-		renamedURL := r.Rel + "/" + ExtractGdriveID(tIn)
-		println(renamedURL)
+func ExtractGdriveFilename(url string) string {
+	// idReg := regexp.MustCompile(`https://drive.google.com/file/d/(\w+.+\w+)`)
+	idReg := regexp.MustCompile(`https://drive.google.com/file/d/(.*)`)
+	id := idReg.FindStringSubmatch(url)
+	// didn't find a match
+	if len(id) < 2 {
+		return ""
 	}
+	return id[1]
+}
+
+func (r Renamer) SearchCell(cell string) string {
+	if strings.Contains(cell, r.Needle) {
+		renamedURL := r.Rel + "/" + ExtractGdriveFilename(cell)
+		return renamedURL
+	}
+	return cell
 }
 
 func (r Renamer) readJSONFromFile(inputPath string) (map[string]interface{}, error) {
@@ -63,5 +76,6 @@ func (r Renamer) Run() error {
 		return err
 	}
 	r.searchMap(c)
+	// fmt.Printf("%v", c)
 	return r.writeJSONToFile(c)
 }
