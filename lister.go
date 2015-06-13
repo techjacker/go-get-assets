@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"io/ioutil"
 	"strings"
 )
 
@@ -38,15 +39,13 @@ func (l *Lister) SearchCell(cell string) string {
 // search through JSON and create map of assets
 func (l *Lister) Run() error {
 
-	// data := struct{}{}
-	// data := interface{}{}
-	contents, err := l.readFile()
-
+	contents, err := ioutil.ReadFile(l.InputPath)
 	if err != nil {
 		return err
 	}
 
-	if err = json.Unmarshal(contents, &l.Data); err != nil {
+	err = json.Unmarshal(contents, &l.Data)
+	if err != nil {
 		return err
 	}
 
