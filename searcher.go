@@ -1,6 +1,8 @@
 package main
 
 import (
+	"encoding/json"
+	"io/ioutil"
 	"strings"
 )
 
@@ -11,8 +13,20 @@ type SearcherRunner interface {
 
 type Searcher struct {
 	InputPath  string
-	Data       interface{}
 	SearchCell func(string) string
+}
+
+func (s *Searcher) readJSONFromFile() (map[string]interface{}, error) {
+
+	contents, err := ioutil.ReadFile(s.InputPath)
+	if err != nil {
+		return nil, err
+	}
+
+	var c map[string]interface{}
+	json.Unmarshal(contents, &c)
+
+	return c, err
 }
 
 func (s *Searcher) Search(cell string) string {

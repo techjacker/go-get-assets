@@ -1,8 +1,6 @@
 package main
 
 import (
-	"encoding/json"
-	"io/ioutil"
 	"strings"
 )
 
@@ -22,7 +20,6 @@ func NewLister(needle string, inputPath string) *Lister {
 	l.Needle = needle
 	l.Assets = map[string]Asset{}
 	l.Searcher.InputPath = inputPath
-	l.Searcher.Data = struct{}{}
 	l.Searcher.SearchCell = l.SearchCell
 	return &l
 }
@@ -36,21 +33,14 @@ func (l *Lister) SearchCell(cell string) string {
 	return cell
 }
 
-// search through JSON and create map of assets
 func (l *Lister) Run() error {
 
-	contents, err := ioutil.ReadFile(l.InputPath)
+	c, err := l.readJSONFromFile()
 	if err != nil {
 		return err
 	}
-
-	err = json.Unmarshal(contents, &l.Data)
-	if err != nil {
-		return err
-	}
-
 	// extract a list of assets from the JSON
-	l.searchMap(l.Data.(map[string]interface{}))
+	l.searchMap(c)
 
-	return nil
+	return err
 }

@@ -23,7 +23,6 @@ func NewRenamer(needle string, inputPath string, out string, rel string) *Rename
 	r.Rel = rel
 
 	r.Searcher.InputPath = inputPath
-	r.Searcher.Data = struct{}{}
 	r.Searcher.SearchCell = r.SearchCell
 
 	r.Extracter.reg = `https://drive.google.com/file/d/(.*)`
@@ -41,19 +40,6 @@ func (r *Renamer) SearchCell(cell string) string {
 	return cell
 }
 
-func (r *Renamer) readJSONFromFile(inputPath string) (map[string]interface{}, error) {
-
-	contents, err := ioutil.ReadFile(inputPath)
-	if err != nil {
-		return nil, err
-	}
-
-	var c map[string]interface{}
-	json.Unmarshal(contents, &c)
-
-	return c, err
-}
-
 func (r *Renamer) writeJSONToFile(c interface{}) error {
 	contents, err := json.Marshal(c)
 	if err != nil {
@@ -63,11 +49,13 @@ func (r *Renamer) writeJSONToFile(c interface{}) error {
 }
 
 func (r *Renamer) Run() error {
-	c, err := r.readJSONFromFile(r.InputPath)
+
+	c, err := r.readJSONFromFile()
 	if err != nil {
 		return err
 	}
+
 	r.searchMap(c)
-	// fmt.Printf("%v", c)
+
 	return r.writeJSONToFile(c)
 }
