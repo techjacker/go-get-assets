@@ -1,7 +1,6 @@
 package main
 
 import (
-	// "fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -65,7 +64,6 @@ func (d *Downloader) Run(assets map[string]Asset) error {
 	)
 	for k, _ := range assets {
 		if id := d.Extracter.Gdrive(k); id != "" {
-			// if id := ExtractGdriveID(k); id != "" {
 			go d.Download(d.CreateTargetUrl(id), k, id, chanDown)
 			go d.WriteToDisk(d.CreateDestPath(id), chanDown)
 		}
