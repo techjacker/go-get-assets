@@ -26,29 +26,23 @@ var (
 
 func Run() error {
 
+	var err error
+
 	l := NewLister(needle, in)
-	d := NewDownloader(imagesDir, rel)
-
-	// r := Renamer{
-	// 	in,
-	// 	out,
-	// 	rel,
-	// 	needle,
-	// }
-
-	if err := l.Run(); err != nil {
+	if err = l.Run(); err != nil {
 		return fmt.Errorf("%v", err)
 	}
 
-	if err := d.Run(l.Assets); err != nil {
+	d := NewDownloader(imagesDir, rel)
+	if err = d.Run(l.Assets); err != nil {
+		return fmt.Errorf("%q", err)
+	}
+	fmt.Printf("%q", l.Assets)
+
+	r := NewRenamer(needle, in, out, rel)
+	if err = r.Run(); err != nil {
 		return fmt.Errorf("%q", err)
 	}
 
-	// if err := r.Run(d.Results, io.Writer{}); err != nil {
-	// 	return fmt.Errorf("%q", err)
-	// }
-
-	fmt.Printf("%q", l.Assets)
-
-	return nil
+	return err
 }
