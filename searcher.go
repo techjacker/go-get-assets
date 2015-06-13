@@ -32,9 +32,9 @@ func (s *Searcher) readJSONFromFile() (map[string]interface{}, error) {
 func (s *Searcher) Search(cell string) string {
 	var res string
 	for _, p := range strings.Split(cell, ",") {
-		res += s.SearchCell(strings.TrimSpace(p))
+		res += s.SearchCell(strings.TrimSpace(p)) + ","
 	}
-	return res
+	return strings.TrimRight(res, ",")
 }
 
 func (s *Searcher) searchArray(d []interface{}) {
@@ -55,9 +55,7 @@ func (s *Searcher) searchMap(d map[string]interface{}) map[string]interface{} {
 		switch v.(type) {
 		case string:
 			newStr := s.Search(v.(string))
-			// println(newStr)
 			d[k] = newStr
-			// println(d[k])
 		case []interface{}:
 			s.searchArray(v.([]interface{}))
 		case map[string]interface{}:

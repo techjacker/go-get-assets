@@ -34,13 +34,11 @@ func (l *Lister) SearchCell(cell string) string {
 }
 
 func (l *Lister) Run() error {
-
 	c, err := l.readJSONFromFile()
 	if err != nil {
 		return err
 	}
 	// extract a list of assets from the JSON
 	l.searchMap(c)
-
 	return err
 }

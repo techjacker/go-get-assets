@@ -2,5 +2,13 @@
   "nophotos": "here",
   "mapofphotos": {
     "photourl": "/images/diff.jpg"
-  }
+  },
+  "clients": [{
+    "name": "Samsung",
+    "photourl": "/images/city.jpg"
+  }, {
+    "name": "Sony",
+    "photourl": "/images/sf.jpg"
+  }],
+  "photourl": "/images/freedom.jpg,/images/traffic.jpg"
 }

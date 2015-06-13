@@ -2,5 +2,13 @@
   "nophotos": "here",
   "mapofphotos": {
     "photourl": "https://drive.google.com/file/d/diff.jpg"
-  }
+  },
+  "clients": [{
+    "name": "Samsung",
+    "photourl": "https://drive.google.com/file/d/city.jpg"
+  }, {
+    "name": "Sony",
+    "photourl": "https://drive.google.com/file/d/sf.jpg"
+  }],
+  "photourl": "https://drive.google.com/file/d/freedom.jpg, https://drive.google.com/file/d/traffic.jpg"
 }
