@@ -6,11 +6,6 @@ import (
 	"strings"
 )
 
-type SearcherRunner interface {
-	SearchCell(string)
-	Run() error
-}
-
 type Searcher struct {
 	InputPath  string
 	SearchCell func(string) string
