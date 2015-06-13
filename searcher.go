@@ -8,6 +8,7 @@ import (
 
 type Searcher struct {
 	InputPath  string
+	ReplaceStr bool
 	SearchCell func(string) string
 }
 
@@ -49,8 +50,12 @@ func (s *Searcher) searchMap(d map[string]interface{}) map[string]interface{} {
 	for k, v := range d {
 		switch v.(type) {
 		case string:
-			newStr := s.Search(v.(string))
-			d[k] = newStr
+			if s.ReplaceStr == true {
+				newStr := s.Search(v.(string))
+				d[k] = newStr
+			} else {
+				s.Search(v.(string))
+			}
 		case []interface{}:
 			s.searchArray(v.([]interface{}))
 		case map[string]interface{}:

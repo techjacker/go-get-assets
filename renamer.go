@@ -23,6 +23,7 @@ func NewRenamer(needle string, inputPath string, out string, rel string) *Rename
 	r.Rel = rel
 
 	r.Searcher.InputPath = inputPath
+	r.Searcher.ReplaceStr = true
 	r.Searcher.SearchCell = r.SearchCell
 
 	r.Extracter.reg = `https://drive.google.com/file/d/(.*)`
@@ -49,13 +50,10 @@ func (r *Renamer) writeJSONToFile(c interface{}) error {
 }
 
 func (r *Renamer) Run() error {
-
 	c, err := r.readJSONFromFile()
 	if err != nil {
 		return err
 	}
-
 	r.searchMap(c)
-
 	return r.writeJSONToFile(c)
 }
