@@ -15,13 +15,15 @@ func Cwd() string {
 	return pwd
 }
 
+var gDriveURL string = "https://drive.google.com/file/d"
+
 // make into command line arguments
 var (
 	in        = filepath.Join(Cwd(), "fixtures", "cms.json")
 	out       = filepath.Join(Cwd(), "fixtures", "cms.downloaded.json")
 	imagesDir = filepath.Join(Cwd(), "src", "images")
 	rel       = "/images"
-	needle    = "https://drive.google.com/file/d/"
+	needle    = gDriveURL
 )
 
 func Run() error {

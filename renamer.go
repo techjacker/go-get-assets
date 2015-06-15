@@ -26,8 +26,8 @@ func NewRenamer(needle string, inputPath string, out string, rel string) *Rename
 	r.Searcher.ReplaceStr = true
 	r.Searcher.SearchCell = r.SearchCell
 
-	r.Extracter.reg = `https://drive.google.com/file/d/(.*)`
-	// r.Extracter.reg = `https://drive.google.com/file/d/(\w+.+\w+)`
+	r.Extracter.reg = gDriveURL + `/(.*)`
+	// r.Extracter.reg = gDriveURL + `/(\w+.+\w+)`
 
 	return &r
 }

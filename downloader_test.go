@@ -13,7 +13,7 @@ import (
 
 var (
 	tId      = "0ByPfUp1fLihSNm5SSjZoalhPQ3M"
-	tIn      = "https://drive.google.com/file/d/" + tId + "/view?usp=sharing"
+	tIn      = gDriveURL + "/" + tId + "/view?usp=sharing"
 	tRel     = "/"
 	eDir     = "src/images/"
 	eRelPath = tRel + tId

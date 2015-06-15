@@ -21,7 +21,7 @@ func TestRewriteUrlsInJson(t *testing.T) {
 		expected  = filepath.Join(Cwd(), "fixtures", "cms.renamer.expected.json")
 		out       = of.Name()
 		rel       = "/images"
-		needle    = "https://drive.google.com/file/d/"
+		needle    = gDriveURL
 		want, got map[string]interface{}
 	)
 

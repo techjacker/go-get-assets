@@ -28,7 +28,7 @@ func NewDownloader(outDir string, relPath string) *Downloader {
 		outDir,
 		relPath,
 		[]Res{},
-		Extracter{`https://drive.google.com/file/d/(\w+)/.*`},
+		Extracter{gDriveURL + `/(\w+)/.*`},
 	}
 }
 
