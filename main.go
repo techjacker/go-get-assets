@@ -2,20 +2,12 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"path/filepath"
 )
 
-func Cwd() string {
-	pwd, err := os.Getwd()
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-	return pwd
-}
-
 var gDriveURL string = "https://drive.google.com/file/d"
+
+// $ go-get-assets <input-json> <download-dir> <rewrite-urls-stem> <output-json>
 
 // make into command line arguments
 var (

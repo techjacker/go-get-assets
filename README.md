@@ -11,10 +11,47 @@ go get github.com/techjacker/go-get-assets
 
 ## Usage
 
-`
-go-get-assets <input-json> <download-dir> <rewrite-urls-stem> <output-json>
+### CLI
+
+`Shell
+$ go-get-assets <input-json> <download-dir> <rewrite-urls-stem> <output-json>
 `
 
+#### Example
+
+`Shell
+$ go-get-assets cms.json $PWD/images /images cms.output.json
+`
+##### BEFORE
+`
+$ cat cms.json
+{
+    "clients": [{
+        "name": "Samsung",
+        "photourl": "https://drive.google.com/file/d/city.jpg"
+    }],
+    "photourl": "https://drive.google.com/file/d/freedom.jpg, https://drive.google.com/file/d/traffic.jpg"
+}
+`
+
+##### AFTER
+`
+$ ls -l $PWD/images
+images/city.jpg
+images/freedom.jpg
+images/traffic.jpg
+`
+
+`
+$ cat cms.output.json
+{
+    "clients": [{
+        "name": "Samsung",
+        "photourl": "/images/city.jpg"
+    }],
+    "photourl": "/images/freedom.jpg, /images/traffic.jpg"
+}
+`
 
 
 ----------------------------------
