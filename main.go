@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"path/filepath"
 )
 
@@ -18,25 +17,10 @@ var (
 	needle    = gDriveURL
 )
 
-func Run() error {
-
-	var err error
-
-	l := NewLister(needle, in)
-	if err = l.Run(); err != nil {
-		return fmt.Errorf("%v", err)
+func New(needle, imagesDir, rel, out string) *GoGetAsseter {
+	return &GoGetAsseter{
+		l: NewLister(needle, in),
+		d: NewDownloader(imagesDir, rel),
+		r: NewRenamer(needle, in, out, rel),
 	}
-
-	d := NewDownloader(imagesDir, rel)
-	if err = d.Run(l.Assets); err != nil {
-		return fmt.Errorf("%q", err)
-	}
-	fmt.Printf("%q", l.Assets)
-
-	r := NewRenamer(needle, in, out, rel)
-	if err = r.Run(); err != nil {
-		return fmt.Errorf("%q", err)
-	}
-
-	return err
 }
