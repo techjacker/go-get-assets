@@ -14,9 +14,29 @@ go get github.com/techjacker/go-get-assets
 ### CLI
 
 `Shell
-$ go-get-assets <input-json> <download-dir> <rewrite-urls-stem> <output-json>
+$ go-get-assets <input-json> <download-dir>
 `
 
+#### CLI Options
+
+stem to replace downloaded URLs in rewritten JSON file
+`
+-r <rewrite-urls-stem>
+`
+
+path to write rewritten JSON file
+`
+-o <output-JSON-path>
+`
+
+needle to use to look for download URLs (defaults to Google drive stem)
+`
+-n <needle>
+`
+
+
+
+<output-json>
 #### Example
 
 `Shell

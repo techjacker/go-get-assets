@@ -4,6 +4,16 @@ import (
 	"fmt"
 )
 
+const gDriveURL string = "https://drive.google.com/file/d"
+
+func New(in, downloadDir, out, rel, needle string) *GoGetAsseter {
+	return &GoGetAsseter{
+		l: NewLister(needle, in),
+		d: NewDownloader(downloadDir, rel),
+		r: NewRenamer(needle, in, out, rel),
+	}
+}
+
 type GoGetAsseter struct {
 	l *Lister
 	d *Downloader
