@@ -33,8 +33,10 @@ func (g *GoGetAsseter) Run() error {
 	}
 	fmt.Printf("%q", g.l.Assets)
 
-	if err = g.r.Run(); err != nil {
-		return fmt.Errorf("%q", err)
+	if g.r.Out != "" {
+		if err = g.r.Run(); err != nil {
+			return fmt.Errorf("%q", err)
+		}
 	}
 
 	return err

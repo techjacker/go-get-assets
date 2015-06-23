@@ -20,3 +20,5 @@ geo
 #public/*
 #!public/index.html
 tmpcode
+images
+cms.output.json

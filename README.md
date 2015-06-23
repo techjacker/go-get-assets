@@ -1,6 +1,9 @@
 # go-get-assets
 
-Downloads all public google drive file links contained in a JSON file. Use Google Drive as your CMS.
+Download the google drive assets contained in a JSON file. Use Google Drive as your CMS.
+
+
+----------------------------------
 
 ## Installation
 
@@ -8,6 +11,7 @@ Downloads all public google drive file links contained in a JSON file. Use Googl
 go get github.com/techjacker/go-get-assets
 `
 
+----------------------------------
 
 ## Usage
 
@@ -18,7 +22,9 @@ $ go-get-assets <input-json> <download-dir>
 `
 
 #### CLI Options
-
+`
+$ go-get-assets -r <rewrite-urls-stem> -o <output-JSON-path> -n <needle> <input-json> <download-dir>
+`
 stem to replace downloaded URLs in rewritten JSON file
 `
 -r <rewrite-urls-stem>
@@ -33,16 +39,33 @@ needle to use to look for download URLs (defaults to Google drive stem)
 `
 -n <needle>
 `
+show help
+`
+$ go-get-assets -h
+`
 
 
+----------------------------------
 
-<output-json>
-#### Example
+## Examples
+
+### Example 1
+
+Just downloads the assets from Google Drive.
 
 `Shell
-$ go-get-assets cms.json $PWD/images /images cms.output.json
+$ go-get-assets $PWD/cms.json $PWD/images
 `
-##### BEFORE
+
+### Example 2
+
+Downloads the assets from Google Drive and saves new JSON file with paths to assets rewritten. 
+
+`Shell
+$ go-get-assets -r /images -o $PWD/cms.output.json $PWD/cms.json $PWD/images
+`
+
+#### BEFORE
 `
 $ cat cms.json
 {
@@ -54,12 +77,12 @@ $ cat cms.json
 }
 `
 
-##### AFTER
+#### AFTER
 `
-$ ls -l $PWD/images
-images/city.jpg
-images/freedom.jpg
-images/traffic.jpg
+$ ls -l images
+ images/city.jpg
+ images/freedom.jpg
+ images/traffic.jpg
 `
 
 `
@@ -76,7 +99,7 @@ $ cat cms.output.json
 
 ----------------------------------
 
-### Methodology
+## How it works
 
 Downloads public files from gdrive by constructing URLs based on the following logic.
 
