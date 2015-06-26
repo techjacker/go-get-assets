@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-func TestRewriteUrlsInJson(t *testing.T) {
+func TestRewriteURLsInJson(t *testing.T) {
 
 	of, err := ioutil.TempFile("", "renamer-test")
 	defer of.Close()

@@ -12,22 +12,22 @@ import (
 )
 
 var (
-	tId      = "0ByPfUp1fLihSNm5SSjZoalhPQ3M"
-	tIn      = gDriveURL + "/" + tId + "/view?usp=sharing"
+	tID      = "0ByPfUp1fLihSNm5SSjZoalhPQ3M"
+	tIn      = gDriveURL + "/" + tID + "/view?usp=sharing"
 	tRel     = "/"
 	eDir     = "src/images/"
-	eRelPath = tRel + tId
-	ePath    = eDir + tId
-	eUrl     = "https://googledrive.com/host/" + tId
+	eRelPath = tRel + tID
+	ePath    = eDir + tID
+	eURL     = "https://googledrive.com/host/" + tID
 )
 
-// func TestExtractIdMissing(t *testing.T) {
+// func TestExtractIDMissing(t *testing.T) {
 // bad string goes here
 
-func TestExtractId(t *testing.T) {
+func TestExtractID(t *testing.T) {
 	d := NewDownloader("", "")
 	got := d.Extracter.Gdrive(tIn)
-	if got != tId {
+	if got != tID {
 		t.Fatal("got:", got)
 	}
 }
@@ -35,7 +35,7 @@ func TestExtractId(t *testing.T) {
 func TestCreateDestPath(t *testing.T) {
 	var d Downloader
 	d.OutputDir = eDir
-	got := d.CreateDestPath(tId)
+	got := d.CreateDestPath(tID)
 	if got != ePath {
 		t.Fatal("got:", got)
 	}
@@ -44,15 +44,15 @@ func TestCreateDestPath(t *testing.T) {
 func TestCreateRelPath(t *testing.T) {
 	var d Downloader
 	d.RelativePath = tRel
-	if d.CreateRelPath(tId) != eRelPath {
-		t.Fatal("got:", d.CreateRelPath(tId))
+	if d.CreateRelPath(tID) != eRelPath {
+		t.Fatal("got:", d.CreateRelPath(tID))
 	}
 }
 
 func TestCreateTargetUrl(t *testing.T) {
 	var d Downloader
-	if d.CreateTargetUrl(tId) != eUrl {
-		t.Fatal("got:", d.CreateTargetUrl(tId))
+	if d.CreateTargetUrl(tID) != eURL {
+		t.Fatal("got:", d.CreateTargetUrl(tID))
 	}
 }
 
@@ -70,7 +70,7 @@ func TestDownload(t *testing.T) {
 		res      Res
 		body     = "hello"
 		id       = "12345"
-		origUrl  = "http://sdffdsfsd.com"
+		origURL  = "http://sdffdsfsd.com"
 		chanDown = make(chan Res, 5)
 		done     = make(chan bool)
 	)
@@ -83,7 +83,7 @@ func TestDownload(t *testing.T) {
 		res = <-chanDown // block, waiting for res value to be populated
 		done <- true     // we're done
 	}()
-	go d.Download(ts.URL, origUrl, id, chanDown)
+	go d.Download(ts.URL, origURL, id, chanDown)
 	<-done // wait for output to be received by res
 
 	if res.Err != nil {
@@ -94,9 +94,9 @@ func TestDownload(t *testing.T) {
 		t.Error("data wrong")
 		t.Error(res.Data)
 	}
-	if res.Url != origUrl {
-		t.Error("origUrl not passed")
-		t.Error(origUrl)
+	if res.Url != origURL {
+		t.Error("origURL not passed")
+		t.Error(origURL)
 	}
 	if res.Id != id {
 		t.Error("id not passed")
@@ -106,7 +106,7 @@ func TestDownload(t *testing.T) {
 
 // func TestWrite(t *testing.T) {
 // 	tWriteFile := func(filename string, data []byte, perm os.FileMode) error {
-// 		if filename != tId {
+// 		if filename != tID {
 // 			return errors.New("filepath wrong, got: " + filename)
 // 		}
 // 		if perm != 0644 {

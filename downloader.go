@@ -42,11 +42,11 @@ func (d *Downloader) CreateTargetUrl(id string) string {
 	return "https://googledrive.com/host/" + id
 }
 
-func (d *Downloader) Download(url string, origUrl string, id string, chanDown chan<- Res) {
+func (d *Downloader) Download(url string, origURL string, id string, chanDown chan<- Res) {
 	res, err := http.Get(url)
 	defer res.Body.Close()
 	data, err := ioutil.ReadAll(res.Body)
-	chanDown <- Res{data, err, origUrl, id}
+	chanDown <- Res{data, err, origURL, id}
 }
 
 func (d *Downloader) WriteToDisk(destPath string, chanDown <-chan Res) {
