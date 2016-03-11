@@ -7,9 +7,9 @@ Download the google drive assets contained in a JSON file. Use Google Drive as y
 
 ## Installation
 
-`Shell
+```Shell
 go get github.com/techjacker/go-get-assets
-`
+```
 
 ----------------------------------
 
@@ -17,32 +17,32 @@ go get github.com/techjacker/go-get-assets
 
 ### CLI
 
-`Shell
+```Shell
 $ go-get-assets <input-json> <download-dir>
-`
+```
 
 #### CLI Options
-`
+```
 $ go-get-assets -r <rewrite-urls-stem> -o <output-JSON-path> -n <needle> <input-json> <download-dir>
-`
+```
 stem to replace downloaded URLs in rewritten JSON file
-`
+```
 -r <rewrite-urls-stem>
-`
+```
 
 path to write rewritten JSON file
-`
+```
 -o <output-JSON-path>
-`
+```
 
 needle to use to look for download URLs (defaults to Google drive stem)
-`
+```
 -n <needle>
-`
+```
 show help
-`
+```
 $ go-get-assets -h
-`
+```
 
 
 ----------------------------------
@@ -53,20 +53,20 @@ $ go-get-assets -h
 
 Just downloads the assets from Google Drive.
 
-`Shell
+```Shell
 $ go-get-assets $PWD/cms.json $PWD/images
-`
+```
 
 ### Example 2
 
 Downloads the assets from Google Drive and saves new JSON file with paths to assets rewritten. 
 
-`Shell
+```Shell
 $ go-get-assets -r /images -o $PWD/cms.output.json $PWD/cms.json $PWD/images
-`
+```
 
 #### BEFORE
-`
+```
 $ cat cms.json
 {
     "clients": [{
@@ -75,17 +75,17 @@ $ cat cms.json
     }],
     "photourl": "https://drive.google.com/file/d/freedom.jpg, https://drive.google.com/file/d/traffic.jpg"
 }
-`
+```
 
 #### AFTER
-`
+```
 $ ls -l images
  images/city.jpg
  images/freedom.jpg
  images/traffic.jpg
-`
+```
 
-`
+```
 $ cat cms.output.json
 {
     "clients": [{
@@ -94,7 +94,7 @@ $ cat cms.output.json
     }],
     "photourl": "/images/freedom.jpg, /images/traffic.jpg"
 }
-`
+```
 
 
 ----------------------------------
